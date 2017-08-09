@@ -6,7 +6,21 @@ const initialState = {
     unitName          : '&#8381;',
     graphList         : [],
     fetching          : false,
-    showAddGraphModal : false
+    showAddGraphModal : false,
+    unitList          : [
+        {
+            _id  : 0,
+            name : 'руб'
+        },
+        {
+            _id  : 1,
+            name : 'кг'
+        },
+        {
+            _id  : 2,
+            name : 'раз'
+        },
+    ]
 };
 
 export default function graphState(state = initialState, action) {

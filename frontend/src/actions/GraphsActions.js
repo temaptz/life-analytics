@@ -69,7 +69,7 @@ export function selectGraph(id) {
 }
 
 // Добавление графика
-export function addGraph(name) {
+export function addGraph(name, unitId) {
 
     return (dispatch) => {
         dispatch({
@@ -81,7 +81,8 @@ export function addGraph(name) {
             {
                 method : 'POST',
                 body   : JSON.stringify({
-                    name : name
+                    name   : name,
+                    unitId : unitId
                 })
             })
             .then(() => {

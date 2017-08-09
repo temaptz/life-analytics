@@ -40,7 +40,8 @@ class App extends Component {
 
                 <AddGraphModal showModal={this.props.Graph.showAddGraphModal}
                                onSave={this.props.addGraph}
-                               onClose={this.props.hideAddGraphModal}/>
+                               onClose={this.props.hideAddGraphModal}
+                               unitList={this.props.Graph.unitList} />
             </div>
         );
     }
