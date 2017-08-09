@@ -7,11 +7,12 @@ module.exports = function(app, db) {
         .post('/graph', (request, response) => {
             let graph = {
                 name       : request.body.name,
+                unitId     : request.body.unitId,
                 dateCreate : new Date()
             };
 
-            if ( !graph.name ) {
-                response.status(500).send('Empty name');
+            if ( !graph.name || !graph.unitId ) {
+                response.status(500).send('Empty parameter');
             }
 
             db.collection('graphs').insert(graph, (err, result) => {
