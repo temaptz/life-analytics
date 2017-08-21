@@ -9,12 +9,9 @@ module.exports = function(app, db) {
                 date    : new Date()
             };
 
-            if ( !point.value ) {
+            if ( !point.value || !point.graphId ) {
                 response.status(500).send('Empty value');
             }
-
-            response.send('success');
-            return;
 
             db.collection('points').insert(point, (err, result) => {
                 if (err) {

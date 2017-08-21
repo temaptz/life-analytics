@@ -8,41 +8,67 @@ module.exports = function(app, db) {
             let graph = {
                 name       : request.body.name,
                 unitId     : request.body.unitId,
-                dateCreate : new Date()
+                dateCreate : new Date(),
+                deleted    : false
             };
 
             if ( !graph.name || !graph.unitId ) {
                 response.status(500).send('Empty parameter');
             }
 
-            db.collection('graphs').insert(graph, (err, result) => {
-                if (err) {
-                    response.send(err);
-                } else {
-                    response.send(result);
-                }
-            });
+            db
+                .collection('graphs')
+                .insert(graph, (err, result) => {
+                    if (err) {
+                        response.send(err);
+                    } else {
+                        response.send(result);
+                    }
+                });
         })
 
         // Получение списка графиков
         .get('/graph', (request, response) => {
-            db.collection('graphs').find({}).sort({dateCreate : -1}).toArray((err, result) => {
-                if (err) {
-                    response.send(err);
-                } else {
-                    response.send(result);
-                }
-            });
+            db
+                .collection('graphs')
+                .find({ deleted : false })
+                .sort({ dateCreate : -1 })
+                .toArray((err, result) => {
+                    if (err) {
+                        response.send(err);
+                    } else {
+                        response.send(result);
+                    }
+                });
         })
 
         // Получение одного графика
         .get('/graph/:id', (request, response) => {
-            db.collection('graphs').find({_id : ObjectId(request.params.id)}).sort({dateCreate : -1}).toArray((err, result) => {
-                if (err) {
+            db
+                .collection('graphs')
+                .findOne({
+                    _id     : ObjectId(request.params.id),
+                    deleted : false
+                })
+                .then((res) => {
+                    response.send(res);
+                }, (err) => {
                     response.send(err);
-                } else {
-                    response.send(result);
-                }
-            });
+                });
+        })
+
+        // Удаление графика
+        .delete('/graph/:id', (request, response) => {
+            db
+                .collection('graphs')
+                .findOneAndUpdate(
+                    { _id : ObjectId(request.params.id) },
+                    { $set: { deleted : true } }
+                )
+                .then((res) => {
+                    response.send(res);
+                }, (err) => {
+                    response.send(err);
+                });
         });
 };

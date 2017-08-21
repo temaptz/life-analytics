@@ -1,16 +1,7 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import './GraphTooltip.scss';
+import React from 'react';
 import moment from 'moment';
 
-class GraphTooltip extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            unitName   : props.Graph.unitName,
-        };
-    }
+class GraphTooltip extends React.Component {
 
     GraphTooltipStyle = {
         padding : '5px',
@@ -29,22 +20,23 @@ class GraphTooltip extends Component {
     };
 
     render() {
-        if ( !this.props.payload || this.props.payload.length === 0 ) {
+
+        const { payload, label, unitName } = this.props;
+
+        if ( !payload || payload.length === 0 ) {
             return null;
         }
 
-        let label = moment.unix(this.props.label).format('DD.MM.YYYY HH:mm'),
-            value = this.props.payload[0].value;
+        let date  = moment.unix(label).format('DD.MM.YYYY HH:mm'),
+            value = payload[0].value;
 
         return (
             <div style={this.GraphTooltipStyle}>
-                <p style={this.GraphTooltipLabelStyle}>{label}</p>
-                <p style={this.GraphTooltipValueStyle}>{value} <span dangerouslySetInnerHTML={{__html: this.state.unitName}}></span></p>
+                <p style={ this.GraphTooltipLabelStyle }>{ date }</p>
+                <p style={ this.GraphTooltipValueStyle }>{ value } { unitName }</p>
             </div>
         );
     }
 }
 
-export default connect((state) => {
-    return state;
-})(GraphTooltip);
+export default GraphTooltip;

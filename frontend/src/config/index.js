@@ -1,3 +1,1 @@
-export const config = {
-    apiUrl : 'http://life.artem-urvanov.ru/api'
-};
+export const apiUrl = '/api';

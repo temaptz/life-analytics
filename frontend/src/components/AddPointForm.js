@@ -40,12 +40,21 @@ class AddPointForm extends Component {
         );
     }
 
+    // При успешном добавлении точки очищать поле ввода
+    componentWillReceiveProps(nextProps) {
+        if ( nextProps.addingPointSuccess === true ) {
+            this.setState({value : ''});
+        }
+    }
+
+    // Изменение поля ввода
     onChange(e) {
         this.setState({value: e.target.value});
     }
 
+    // Кнопка добавления точки
     onSubmit() {
-        this.props.onSetValue(this.state.value);
+        this.props.onAddPoint(this.state.value, this.props.graphId);
     }
 }
 

@@ -1,6 +1,5 @@
 import * as actionTypes from '../constants/ActionTypes';
-import moment from 'moment';
-import { config } from '../config';
+import * as pointsApi from '../api/pointsApi';
 
 // Получить точки графика
 export function getPoints(graphId) {
@@ -11,33 +10,23 @@ export function getPoints(graphId) {
             payload : null
         });
 
-        fetch(config.apiUrl + '/graph/'+graphId+'/points',
-            {
-                method : 'GET'
-            })
-            .then((response) => response.json())
-            .then((json) => {
-
-                let points = [];
-                json.forEach((item) => {
-                    let itemMoment = moment(item.date);
-                    points.push({
-                        value    : parseFloat(item.value),
-                        date     : itemMoment.format('DD.MM.YYYY HH:mm'),
-                        unixtime : itemMoment.unix()
-                    });
-                });
+        pointsApi
+            .getGraphPoints(graphId)
+            .then((points) => {
 
                 dispatch({
                     type    : actionTypes.GET_POINTS_SUCCESS,
                     payload : points
                 });
+
             })
-            .catch(() => {
+            .catch((err) => {
+
                 dispatch({
                     type    : actionTypes.GET_POINTS_ERROR,
-                    payload : null
+                    payload : err
                 });
+
             });
 
     }
@@ -53,24 +42,23 @@ export function addPoint(value, graphId) {
             payload : value
         });
 
-        fetch(config.apiUrl + '/graph/'+graphId+'/points',
-            {
-                method : 'POST',
-                body   : JSON.stringify({
-                    value : value
-                })
-            })
-            .then(() => {
+        pointsApi
+            .addGraphPoint(graphId, value)
+            .then((res) => {
+
                 dispatch({
                     type    : actionTypes.ADD_POINT_SUCCESS,
-                    payload : value
+                    payload : res
                 });
+
             })
-            .catch(() => {
+            .catch((err) => {
+
                 dispatch({
                     type    : actionTypes.ADD_POINT_ERROR,
-                    payload : null
+                    payload : err
                 });
+
             });
 
     }

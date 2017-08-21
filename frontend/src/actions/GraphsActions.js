@@ -1,6 +1,5 @@
 import * as actionTypes from '../constants/ActionTypes';
-import { getPoints } from './PointsActions';
-import { config } from '../config';
+import * as graphApi from '../api/graphApi';
 
 // Получение списка графиков
 export function getGraphList() {
@@ -8,29 +7,27 @@ export function getGraphList() {
     return (dispatch) => {
         dispatch({
             type    : actionTypes.GET_GRAPH_LIST_REQUEST,
-            payload : name
+            payload : null
         });
 
-        fetch(config.apiUrl + '/graph',
-            {
-                method : 'GET'
-            })
-            .then((response) => response.json())
-            .then((json) => {
+        graphApi
+            .getGraphList()
+            .then((res) => {
+
                 dispatch({
                     type    : actionTypes.GET_GRAPH_LIST_SUCCESS,
-                    payload : json
+                    payload : res
                 });
 
-                dispatch(selectGraph(json[0]['_id']));
             })
-            .catch(() => {
+            .catch((err) => {
+
                 dispatch({
                     type    : actionTypes.GET_GRAPH_LIST_ERROR,
-                    payload : null
+                    payload : err
                 });
-            });
 
+            });
     }
 
 }
@@ -44,25 +41,23 @@ export function selectGraph(id) {
             payload : id
         });
 
-        fetch(config.apiUrl + '/graph/'+id,
-            {
-                method : 'GET'
-            })
-            .then((response) => response.json())
-            .then((json) => {
+        graphApi
+            .getGraph(id)
+            .then((res) => {
 
                 dispatch({
                     type    : actionTypes.SELECT_GRAPH_SUCCESS,
-                    payload : id
+                    payload : res
                 });
 
-                dispatch(getPoints(id));
             })
-            .catch(() => {
+            .catch((err) => {
+
                 dispatch({
-                    type    : actionTypes.GET_GRAPH_LIST_ERROR,
-                    payload : null
+                    type    : actionTypes.SELECT_GRAPH_ERROR,
+                    payload : err
                 });
+
             });
     }
 
@@ -77,25 +72,25 @@ export function addGraph(name, unitId) {
             payload : name
         });
 
-        fetch(config.apiUrl + '/graph',
-            {
-                method : 'POST',
-                body   : JSON.stringify({
-                    name   : name,
-                    unitId : unitId
-                })
-            })
-            .then(() => {
+        graphApi
+            .addGraph(name, unitId)
+            .then((res) => {
+
                 dispatch({
                     type    : actionTypes.ADD_GRAPH_SUCCESS,
-                    payload : name
+                    payload : res
                 });
+
+                dispatch(hideAddGraphModal());
+
             })
-            .catch(() => {
+            .catch((res) => {
+
                 dispatch({
                     type    : actionTypes.ADD_GRAPH_ERROR,
-                    payload : null
+                    payload : res
                 });
+
             });
 
     }
@@ -108,7 +103,7 @@ export function showAddGraphModal() {
     return (dispatch) => {
         dispatch({
             type    : actionTypes.SHOW_ADD_GRAPH_MODAL,
-            payload : true
+            payload : null
         });
     }
 
@@ -120,8 +115,38 @@ export function hideAddGraphModal() {
     return (dispatch) => {
         dispatch({
             type    : actionTypes.HIDE_ADD_GRAPH_MODAL,
-            payload : false
+            payload : null
         });
+    }
+
+}
+
+// Удалить график
+export function deleteGraph(id) {
+
+    return (dispatch) => {
+        dispatch({
+            type    : actionTypes.DELETE_GRAPH_REQUEST,
+            payload : id
+        });
+
+        graphApi.deleteGraph(id)
+            .then((res) => {
+
+                dispatch({
+                    type    : actionTypes.DELETE_GRAPH_SUCCESS,
+                    payload : res
+                });
+
+            })
+            .catch((err) => {
+
+                dispatch({
+                    type    : actionTypes.DELETE_GRAPH_ERROR,
+                    payload : err
+                });
+
+            });
     }
 
 }
