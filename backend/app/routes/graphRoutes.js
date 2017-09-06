@@ -1,3 +1,4 @@
+const authorization = require('../helpers/authorization');
 const ObjectId = require('mongodb').ObjectID;
 
 module.exports = function(app, db) {
@@ -5,70 +6,134 @@ module.exports = function(app, db) {
 
         // Добавление графика
         .post('/graph', (request, response) => {
-            let graph = {
-                name       : request.body.name,
-                unitId     : request.body.unitId,
-                dateCreate : new Date(),
-                deleted    : false
-            };
+            authorization.getCurrentUserByHeader(request, db)
+                .then((user) => {
+                    if ( user && user._id ) {
 
-            if ( !graph.name || !graph.unitId ) {
-                response.status(500).send('Empty parameter');
-            }
+                        const userId = user._id;
 
-            db
-                .collection('graphs')
-                .insert(graph, (err, result) => {
-                    if (err) {
-                        response.send(err);
+                        let graph = {
+                            name       : request.body.name,
+                            unitId     : request.body.unitId,
+                            dateCreate : new Date(),
+                            deleted    : false,
+                            userId     : userId
+                        };
+
+                        if ( !graph.name || !graph.unitId ) {
+                            response.status(500).send('Empty parameter');
+                        }
+
+                        db
+                            .collection('graphs')
+                            .insert(graph, (err, result) => {
+                                if (err) {
+                                    response.send(err);
+                                } else {
+                                    response.send(result);
+                                }
+                            });
+
                     } else {
-                        response.send(result);
+
+                        authorization.accessDenied(response);
+
                     }
                 });
         })
 
         // Получение списка графиков
         .get('/graph', (request, response) => {
-            db
-                .collection('graphs')
-                .find({ deleted : false })
-                .sort({ dateCreate : -1 })
-                .toArray((err, result) => {
-                    if (err) {
-                        response.send(err);
+            authorization.getCurrentUserByHeader(request, db)
+                .then((user) => {
+                    if ( user && user._id ) {
+
+                        const userId = user._id;
+
+                        db
+                            .collection('graphs')
+                            .find({
+                                userId  : ObjectId(userId),
+                                deleted : false
+                            })
+                            .sort({ dateCreate : -1 })
+                            .toArray((err, result) => {
+                                if (err) {
+                                    response.send(err);
+                                } else {
+                                    response.send(result);
+                                }
+                            });
+
                     } else {
-                        response.send(result);
+
+                        authorization.accessDenied(response);
+
                     }
                 });
         })
 
         // Получение одного графика
         .get('/graph/:id', (request, response) => {
-            db
-                .collection('graphs')
-                .findOne({
-                    _id     : ObjectId(request.params.id),
-                    deleted : false
-                })
-                .then((res) => {
-                    response.send(res);
-                }, (err) => {
-                    response.send(err);
+            authorization.getCurrentUserByHeader(request, db)
+                .then((user) => {
+                    if ( user && user._id ) {
+
+                        const userId = user._id;
+
+                        db
+                            .collection('graphs')
+                            .findOne({
+                                _id     : ObjectId(request.params.id),
+                                userId  : ObjectId(userId),
+                                deleted : false
+                            })
+                            .then((res) => {
+                                response.send(res);
+                            }, (err) => {
+                                response.send(err);
+                            });
+
+                    } else {
+
+                        authorization.accessDenied(response);
+
+                    }
                 });
         })
 
         // Удаление графика
         .delete('/graph/:id', (request, response) => {
-            db
-                .collection('graphs')
-                .findOneAndUpdate(
-                    { _id : ObjectId(request.params.id) },
-                    { $set: { deleted : true } }
-                )
-                .then((res) => {
-                    response.send(res);
-                }, (err) => {
-                    response.send(err);
+            authorization.getCurrentUserByHeader(request, db)
+                .then((user) => {
+                    if ( user && user._id ) {
+
+                        const userId = user._id;
+
+                        db
+                            .collection('graphs')
+                            .findOneAndUpdate(
+                                {
+                                    _id     : ObjectId(request.params.id),
+                                    userId  : ObjectId(userId),
+                                },
+                                {
+                                    $set: {
+                                        deleted : true
+                                    }
+                                }
+                            )
+                            .then((res) => {
+                                response.send(res);
+                            }, (err) => {
+                                response.send(err);
+                            });
+
+                    } else {
+
+                        authorization.accessDenied(response);
+
+                    }
                 });
         });
 };

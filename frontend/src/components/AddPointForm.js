@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Button } from 'react-bootstrap';
 
-class AddPointForm extends Component {
+class AddPointForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,7 +14,6 @@ class AddPointForm extends Component {
 
         return (
             <div>
-                {fetching}
                 <form className="form-inline">
                     <label htmlFor="addPointFormVal">
                         Значение

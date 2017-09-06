@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 import createSagaMiddleware from 'redux-saga';
 import graphSaga from '../saga/graphSaga';
 import pointsSaga from '../saga/pointsSaga';
+import userSaga from '../saga/userSaga';
 
 export default function configureStore(initialState) {
 
@@ -20,6 +21,7 @@ export default function configureStore(initialState) {
 
     sagaMiddleware.run(graphSaga);
     sagaMiddleware.run(pointsSaga);
+    sagaMiddleware.run(userSaga);
 
     return store
 }

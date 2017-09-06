@@ -1,1 +1,2 @@
-export const apiUrl = '/api';
+export const apiUrl = 'http://localhost:8000';
+export const googleClientId = '';

@@ -1,4 +1,6 @@
 import { apiUrl } from '../config';
+import * as storage from '../constants/Storage';
+import * as browserStorage from '../helpers/browserStorage';
 import moment from 'moment';
 
 // Получение точек графика
@@ -6,7 +8,10 @@ export function getGraphPoints(graphId) {
 
     return fetch(apiUrl + '/graph/'+graphId+'/points',
         {
-            method : 'GET'
+            method : 'GET',
+            headers: {
+                'Authorization': 'Token ' + browserStorage.get(storage.USER_TOKEN)
+            }
         })
         .then((response) => response.json())
         .then((json) => {
@@ -23,8 +28,7 @@ export function getGraphPoints(graphId) {
 
             return points;
 
-        })
-        .catch((err) => { return err });
+        });
 
 }
 
@@ -34,13 +38,15 @@ export function addGraphPoint(graphId, value) {
     return fetch(apiUrl + '/graph/'+graphId+'/points',
         {
             method : 'POST',
+            headers: {
+                'Authorization': 'Token ' + browserStorage.get(storage.USER_TOKEN)
+            },
             body   : JSON.stringify({
                 graphId : graphId,
                 value   : value
             })
         })
         .then((response) => response.json())
-        .then((json) => { return json })
-        .catch((err) => { return err });
+        .then((json) => { return json });
 
 }

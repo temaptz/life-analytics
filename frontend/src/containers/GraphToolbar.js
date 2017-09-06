@@ -1,7 +1,6 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import './App.scss';
 import SelectGraph from '../components/SelectGraph';
 import AddGraphButton from '../components/AddGraph/AddGraphButton';
 import DeleteGraphButton from '../components/deleteGraphButton';
@@ -9,12 +8,6 @@ import AddGraphModal from '../components/AddGraph/AddGraphModal';
 import * as actions from '../actions/GraphsActions';
 
 class GraphToolbar extends React.Component {
-
-    constructor(props) {
-        super(props);
-
-        this.props.getGraphList();
-    }
 
     render() {
         return (
@@ -55,6 +48,11 @@ class GraphToolbar extends React.Component {
     // Удаление графика
     deleteGraph() {
         this.props.deleteGraph(this.props.Graph.id);
+    }
+
+    // После подключения компонента нужно запросить список графиков
+    componentWillMount() {
+        this.props.getGraphList();
     }
 }
 
