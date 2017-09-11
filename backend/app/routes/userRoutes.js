@@ -44,7 +44,7 @@ module.exports = function(app, db) {
 
                                 demoData.generate(userRes.insertedId, db)
                                     .then(() => {
-                                        response.send(userRes);
+                                        response.send(userRes.ops[0]);
                                     });
 
                             }, (err) => {
