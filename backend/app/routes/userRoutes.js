@@ -1,5 +1,6 @@
 const url = require('url');
 const uuidV4 = require('uuid/v4');
+const demoData = require('../helpers/demoData');
 
 module.exports = function(app, db) {
     app
@@ -38,12 +39,18 @@ module.exports = function(app, db) {
 
                         db
                             .collection('users')
-                            .insert(user, (err, result) => {
-                                if (err) {
-                                    response.send(err);
-                                } else {
-                                    response.send(user);
-                                }
+                            .insertOne(user)
+                            .then((userRes) => {
+
+                                demoData.generate(userRes.insertedId, db)
+                                    .then(() => {
+                                        response.send(userRes);
+                                    });
+
+                            }, (err) => {
+
+                                response.send(err);
+
                             });
 
                     }

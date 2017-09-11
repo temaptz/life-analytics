@@ -1,3 +1,3 @@
 module.exports = {
-    url : 'mongodb://localhost:27017/life-analytics'
+    url : 'mongodb://artem-urvanov.ru:27017/life-analytics'
 };

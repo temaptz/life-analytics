@@ -1,53 +1,50 @@
 const authorization = require('../helpers/authorization');
+const point = require('../helpers/point');
+const ObjectId = require('mongodb').ObjectID;
 
-module.exports = function(app, db) {
+module.exports = (app, db) => {
     app
 
         // Добавление точки
         .post('/graph/:graphId/points', (request, response) => {
             authorization.getCurrentUserByHeader(request, db)
                 .then((user) => {
-                    if ( user && user._id ) {
 
-                        const userId  = user._id,
-                            graphId = request.params.graphId;
+                    const userId  = user._id,
+                        graphId = request.params.graphId;
 
-                        authorization.checkGraphAccess(db, userId, graphId)
-                            .then((accessAllowed) => {
-                                if ( accessAllowed ) {
+                    authorization.checkGraphAccess(userId, graphId, db)
+                        .then(() => {
 
-                                    let point = {
-                                        graphId : request.params.graphId,
-                                        value   : request.body.value,
-                                        date    : new Date()
-                                    };
+                            const point = point.create(request.params.graphId, request.body.value);
 
-                                    if ( !point.value || !point.graphId ) {
-                                        response.status(500).send('Empty value');
-                                    }
+                            if ( !point.value || !point.graphId ) {
+                                response.status(500).send('Empty value');
+                            }
 
-                                    db
-                                        .collection('points')
-                                        .insert(point, (err, result) => {
-                                            if (err) {
-                                                response.send(err);
-                                            } else {
-                                                response.send(result);
-                                            }
-                                        });
+                            db
+                                .collection('points')
+                                .insertOne(point)
+                                .then((res) => {
 
-                                } else {
+                                    response.send(res);
 
-                                    authorization.accessDenied(response);
+                                }, (err) => {
 
-                                }
-                            });
+                                    response.send(err);
 
-                    } else {
+                                });
 
-                        authorization.accessDenied(response);
+                        }, () => {
 
-                    }
+                            authorization.accessDenied(response);
+
+                        });
+
+                }, () => {
+
+                    authorization.accessDenied(response);
+
                 });
         })
 
@@ -55,43 +52,42 @@ module.exports = function(app, db) {
         .get('/graph/:graphId/points', (request, response) => {
             authorization.getCurrentUserByHeader(request, db)
                 .then((user) => {
-                    if ( user && user._id ) {
 
-                        const userId  = user._id,
-                              graphId = request.params.graphId;
+                    const userId  = user._id,
+                        graphId = request.params.graphId;
 
-                        authorization.checkGraphAccess(db, userId, graphId)
-                            .then((accessAllowed) => {
-                                if ( accessAllowed ) {
+                    authorization.checkGraphAccess(userId, graphId, db)
+                        .then(() => {
 
-                                    db
-                                        .collection('points')
-                                        .find({
-                                            graphId : graphId
-                                        })
-                                        .sort({
-                                            date : 1
-                                        })
-                                        .toArray((err, result) => {
-                                            if (err) {
-                                                response.send(err);
-                                            } else {
-                                                response.send(result);
-                                            }
-                                        });
+                            db
+                                .collection('points')
+                                .find({
+                                    graphId : ObjectId(graphId)
+                                })
+                                .sort({
+                                    date : 1
+                                })
+                                .toArray()
+                                .then((res) => {
 
-                                } else {
+                                    response.send(res);
 
-                                    authorization.accessDenied(response);
+                                }, (err) => {
 
-                                }
-                            });
+                                    response.send(err);
 
-                    } else {
+                                });
 
-                        authorization.accessDenied(response);
+                        }, () => {
 
-                    }
+                            authorization.accessDenied(response);
+
+                        });
+
+                }, () => {
+
+                    authorization.accessDenied(response);
+
                 });
         });
 };

@@ -17,21 +17,29 @@ module.exports.getCurrentUserByHeader = (request, db) => {
                     token   : token,
                     deleted : false
                 })
-                .then((res) => {
-                    return res;
-                }, () => {
-                    return null;
+                .then((user) => {
+
+                    if ( user && user._id ) {
+                        return user;
+                    }
+
+                    return Promise.reject(user);
+
+                }, (err) => {
+
+                    return Promise.reject(err);
+
                 });
 
         }
 
     }
 
-    return Promise.resolve(null);
+    return Promise.reject(new Error('unknown error'));
 };
 
 // Проверить доступ пользователя к графику
-module.exports.checkGraphAccess = (db, userId, graphId) => {
+module.exports.checkGraphAccess = (userId, graphId, db) => {
 
     if ( userId && graphId ) {
 
@@ -41,14 +49,22 @@ module.exports.checkGraphAccess = (db, userId, graphId) => {
                 _id     : ObjectId(graphId),
             })
             .then((res) => {
-                return ( res && res.userId && res.userId.toString() === userId.toString() );
+
+                if ( res && res.userId && res.userId.toString() === userId.toString() ) {
+                    return true;
+                }
+
+                return Promise.reject(false);
+
             }, () => {
-                return false;
+
+                return Promise.reject(false);
+
             });
 
     }
 
-    return Promise.resolve(false);
+    return Promise.reject(false);
 };
 
 // Показать ошибку доступа

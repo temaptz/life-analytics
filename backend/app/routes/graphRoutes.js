@@ -1,44 +1,42 @@
 const authorization = require('../helpers/authorization');
 const ObjectId = require('mongodb').ObjectID;
 
-module.exports = function(app, db) {
+module.exports = (app, db) => {
     app
 
         // Добавление графика
         .post('/graph', (request, response) => {
             authorization.getCurrentUserByHeader(request, db)
                 .then((user) => {
-                    if ( user && user._id ) {
 
-                        const userId = user._id;
+                    const userId = user._id;
 
-                        let graph = {
-                            name       : request.body.name,
-                            unitId     : request.body.unitId,
-                            dateCreate : new Date(),
-                            deleted    : false,
-                            userId     : userId
-                        };
+                    let graph = {
+                        name       : request.body.name,
+                        unitId     : request.body.unitId,
+                        dateCreate : new Date(),
+                        deleted    : false,
+                        userId     : userId
+                    };
 
-                        if ( !graph.name || !graph.unitId ) {
-                            response.status(500).send('Empty parameter');
-                        }
-
-                        db
-                            .collection('graphs')
-                            .insert(graph, (err, result) => {
-                                if (err) {
-                                    response.send(err);
-                                } else {
-                                    response.send(result);
-                                }
-                            });
-
-                    } else {
-
-                        authorization.accessDenied(response);
-
+                    if ( !graph.name || !graph.unitId ) {
+                        response.status(500).send('Empty parameter');
                     }
+
+                    db
+                        .collection('graphs')
+                        .insert(graph, (err, result) => {
+                            if (err) {
+                                response.send(err);
+                            } else {
+                                response.send(result);
+                            }
+                        });
+
+                }, () => {
+
+                    authorization.accessDenied(response);
+
                 });
         })
 
@@ -46,30 +44,28 @@ module.exports = function(app, db) {
         .get('/graph', (request, response) => {
             authorization.getCurrentUserByHeader(request, db)
                 .then((user) => {
-                    if ( user && user._id ) {
 
-                        const userId = user._id;
+                    const userId = user._id;
 
-                        db
-                            .collection('graphs')
-                            .find({
-                                userId  : ObjectId(userId),
-                                deleted : false
-                            })
-                            .sort({ dateCreate : -1 })
-                            .toArray((err, result) => {
-                                if (err) {
-                                    response.send(err);
-                                } else {
-                                    response.send(result);
-                                }
-                            });
+                    db
+                        .collection('graphs')
+                        .find({
+                            userId  : ObjectId(userId),
+                            deleted : false
+                        })
+                        .sort({ dateCreate : -1 })
+                        .toArray((err, result) => {
+                            if (err) {
+                                response.send(err);
+                            } else {
+                                response.send(result);
+                            }
+                        });
 
-                    } else {
+                }, () => {
 
-                        authorization.accessDenied(response);
+                    authorization.accessDenied(response);
 
-                    }
                 });
         })
 
@@ -77,28 +73,26 @@ module.exports = function(app, db) {
         .get('/graph/:id', (request, response) => {
             authorization.getCurrentUserByHeader(request, db)
                 .then((user) => {
-                    if ( user && user._id ) {
 
-                        const userId = user._id;
+                    const userId = user._id;
 
-                        db
-                            .collection('graphs')
-                            .findOne({
-                                _id     : ObjectId(request.params.id),
-                                userId  : ObjectId(userId),
-                                deleted : false
-                            })
-                            .then((res) => {
-                                response.send(res);
-                            }, (err) => {
-                                response.send(err);
-                            });
+                    db
+                        .collection('graphs')
+                        .findOne({
+                            _id     : ObjectId(request.params.id),
+                            userId  : ObjectId(userId),
+                            deleted : false
+                        })
+                        .then((res) => {
+                            response.send(res);
+                        }, (err) => {
+                            response.send(err);
+                        });
 
-                    } else {
+                }, () => {
 
-                        authorization.accessDenied(response);
+                    authorization.accessDenied(response);
 
-                    }
                 });
         })
 
@@ -106,34 +100,32 @@ module.exports = function(app, db) {
         .delete('/graph/:id', (request, response) => {
             authorization.getCurrentUserByHeader(request, db)
                 .then((user) => {
-                    if ( user && user._id ) {
 
-                        const userId = user._id;
+                    const userId = user._id;
 
-                        db
-                            .collection('graphs')
-                            .findOneAndUpdate(
-                                {
-                                    _id     : ObjectId(request.params.id),
-                                    userId  : ObjectId(userId),
-                                },
-                                {
-                                    $set: {
-                                        deleted : true
-                                    }
+                    db
+                        .collection('graphs')
+                        .findOneAndUpdate(
+                            {
+                                _id     : ObjectId(request.params.id),
+                                userId  : ObjectId(userId),
+                            },
+                            {
+                                $set: {
+                                    deleted : true
                                 }
-                            )
-                            .then((res) => {
-                                response.send(res);
-                            }, (err) => {
-                                response.send(err);
-                            });
+                            }
+                        )
+                        .then((res) => {
+                            response.send(res);
+                        }, (err) => {
+                            response.send(err);
+                        });
 
-                    } else {
+                }, () => {
 
-                        authorization.accessDenied(response);
+                    authorization.accessDenied(response);
 
-                    }
                 });
         });
 };
