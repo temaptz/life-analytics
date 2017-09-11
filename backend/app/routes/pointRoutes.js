@@ -11,20 +11,21 @@ module.exports = (app, db) => {
                 .then((user) => {
 
                     const userId  = user._id,
-                        graphId = request.params.graphId;
+                        graphId   = request.params.graphId,
+                        value     = request.body.value;
 
                     authorization.checkGraphAccess(userId, graphId, db)
                         .then(() => {
 
-                            const point = point.create(request.params.graphId, request.body.value);
+                            const newPoint = point.create(graphId, value);
 
-                            if ( !point.value || !point.graphId ) {
+                            if ( !newPoint.value || !newPoint.graphId ) {
                                 response.status(500).send('Empty value');
                             }
 
                             db
                                 .collection('points')
-                                .insertOne(point)
+                                .insertOne(newPoint)
                                 .then((res) => {
 
                                     response.send(res);
