@@ -30,6 +30,12 @@ export default function pointState(state = initialState, action) {
         case actionTypes.ADD_POINT_ERROR:
             return { ...state, addingPointSuccess: false, fetching: false };
 
+
+        // Сброс состояния точек
+        case actionTypes.CLEAR_POINTS_STATE:
+            return initialState;
+
+
         default:
             return state;
     }

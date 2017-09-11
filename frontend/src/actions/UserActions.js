@@ -45,8 +45,6 @@ export function signIn(providerUserId, userName, provider) {
             })
             .catch((err) => {
 
-            console.log(err);
-
                 dispatch({
                     type    : actionTypes.SIGN_IN_ERROR,
                     payload : err
@@ -74,16 +72,9 @@ export function signOut() {
 
     return (dispatch) => {
         dispatch({
-            type    : actionTypes.SIGN_OUT_REQUEST,
+            type    : actionTypes.SIGN_OUT,
             payload : null
         });
-
-        setTimeout(() => {
-            dispatch({
-                type    : actionTypes.SIGN_OUT_SUCCESS,
-                payload : null
-            });
-        }, 10);
     }
 
 }

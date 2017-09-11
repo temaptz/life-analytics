@@ -21,15 +21,8 @@ export default function userState(state = initialState, action) {
 
 
         // Выход
-        case actionTypes.SIGN_OUT_REQUEST:
-            return { ...state, fetching: true };
-
-        case actionTypes.SIGN_OUT_SUCCESS:
-            return { ...state, name: '', token: '', authorized: false, fetching: false };
-
-        case actionTypes.SIGN_OUT_ERROR:
-            return { ...state, fetching: false };
-
+        case actionTypes.SIGN_OUT:
+            return initialState;
 
 
         default:

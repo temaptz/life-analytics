@@ -50,10 +50,6 @@ class GraphToolbar extends React.Component {
         this.props.deleteGraph(this.props.Graph.id);
     }
 
-    // После подключения компонента нужно запросить список графиков
-    componentWillMount() {
-        this.props.getGraphList();
-    }
 }
 
 export default connect(

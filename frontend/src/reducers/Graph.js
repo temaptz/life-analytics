@@ -78,6 +78,11 @@ export default function graphState(state = initialState, action) {
             return { ...state, showAddGraphModal: false };
 
 
+        // Сброс состояния графиков
+        case actionTypes.CLEAR_GRAPHS_STATE:
+            return initialState;
+
+
         default:
             return state;
     }

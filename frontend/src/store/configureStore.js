@@ -23,5 +23,5 @@ export default function configureStore(initialState) {
     sagaMiddleware.run(pointsSaga);
     sagaMiddleware.run(userSaga);
 
-    return store
+    return store;
 }
