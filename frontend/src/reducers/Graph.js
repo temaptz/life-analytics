@@ -20,6 +20,10 @@ const initialState = {
             _id  : 2,
             name : 'раз'
         },
+        {
+            _id  : 3,
+            name : 'час'
+        }
     ]
 };
 

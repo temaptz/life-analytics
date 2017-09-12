@@ -1,7 +1,6 @@
 import { apiUrl } from '../config';
 import * as storage from '../constants/Storage';
 import * as browserStorage from '../helpers/browserStorage';
-import moment from 'moment';
 
 // Получение точек графика
 export function getGraphPoints(graphId) {
@@ -14,21 +13,7 @@ export function getGraphPoints(graphId) {
             }
         })
         .then((response) => response.json())
-        .then((json) => {
-
-            let points = [];
-            json.forEach((item) => {
-                let itemMoment = moment(item.date);
-                points.push({
-                    value    : parseFloat(item.value),
-                    date     : itemMoment.format('DD.MM.YYYY HH:mm'),
-                    unixtime : itemMoment.unix()
-                });
-            });
-
-            return points;
-
-        });
+        .then((json) => { return json });
 
 }
 

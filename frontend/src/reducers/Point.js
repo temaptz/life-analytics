@@ -1,7 +1,7 @@
 import * as actionTypes from '../constants/ActionTypes';
 
 const initialState = {
-    pointsData         : [],
+    points             : [],
     fetching           : false,
     addingPointSuccess : true,
 };
@@ -11,13 +11,13 @@ export default function pointState(state = initialState, action) {
 
         // Получение точек
         case actionTypes.GET_POINTS_REQUEST:
-            return { ...state, pointsData: [], fetching: true };
+            return { ...state, points: [], fetching: true };
 
         case actionTypes.GET_POINTS_SUCCESS:
-            return { ...state, pointsData: action.payload, fetching: false };
+            return { ...state, points: action.payload, fetching: false };
 
         case actionTypes.GET_POINTS_ERROR:
-            return { ...state, pointsData: [], fetching: false };
+            return { ...state, points: [], fetching: false };
 
 
         // Добавление точки

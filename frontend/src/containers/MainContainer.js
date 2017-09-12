@@ -17,7 +17,7 @@ class MainContainer extends React.Component {
 
                 <GraphToolbar />
 
-                <RechartsGraph pointsData={ this.props.Point.pointsData }
+                <RechartsGraph points={ this.props.Point.points }
                                graphName={ this.props.Graph.name }
                                unitName={ this.props.Graph.unitName } />
                 <hr />
