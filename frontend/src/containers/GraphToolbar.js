@@ -40,7 +40,7 @@ class GraphToolbar extends React.Component {
                 <AddGraphModal showModal={ this.props.Graph.showAddGraphModal }
                                onSave={ this.props.addGraph }
                                onClose={ this.props.hideAddGraphModal }
-                               unitList={ this.props.Graph.unitList } />
+                               unitList={ this.props.Unit.list } />
             </div>
         );
     }
