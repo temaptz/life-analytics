@@ -74,19 +74,29 @@ module.exports = (app, db) => {
             authorization.getCurrentUserByHeader(request, db)
                 .then((user) => {
 
-                    const userId = user._id;
+                    const userId = user._id,
+                        graphId  = request.params.id;
 
-                    db
-                        .collection('graphs')
-                        .findOne({
-                            _id     : ObjectId(request.params.id),
-                            userId  : ObjectId(userId),
-                            deleted : false
-                        })
-                        .then((res) => {
-                            response.send(res);
-                        }, (err) => {
-                            response.send(err);
+                    authorization.checkGraphAccess(userId, graphId, db)
+                        .then(() => {
+
+                            db
+                                .collection('graphs')
+                                .findOne({
+                                    _id     : ObjectId(graphId),
+                                    userId  : ObjectId(userId),
+                                    deleted : false
+                                })
+                                .then((res) => {
+                                    response.send(res);
+                                }, (err) => {
+                                    response.send(err);
+                                });
+
+                        }, () => {
+
+                            authorization.accessDenied(response);
+
                         });
 
                 }, () => {
@@ -101,25 +111,35 @@ module.exports = (app, db) => {
             authorization.getCurrentUserByHeader(request, db)
                 .then((user) => {
 
-                    const userId = user._id;
+                    const userId = user._id,
+                        graphId  = request.params.id;
 
-                    db
-                        .collection('graphs')
-                        .findOneAndUpdate(
-                            {
-                                _id     : ObjectId(request.params.id),
-                                userId  : ObjectId(userId),
-                            },
-                            {
-                                $set: {
-                                    deleted : true
-                                }
-                            }
-                        )
-                        .then((res) => {
-                            response.send(res);
-                        }, (err) => {
-                            response.send(err);
+                    authorization.checkGraphAccess(userId, graphId, db)
+                        .then(() => {
+
+                            db
+                                .collection('graphs')
+                                .findOneAndUpdate(
+                                    {
+                                        _id     : ObjectId(graphId),
+                                        userId  : ObjectId(userId),
+                                    },
+                                    {
+                                        $set: {
+                                            deleted : true
+                                        }
+                                    }
+                                )
+                                .then((res) => {
+                                    response.send(res);
+                                }, (err) => {
+                                    response.send(err);
+                                });
+
+                        }, () => {
+
+                            authorization.accessDenied(response);
+
                         });
 
                 }, () => {
