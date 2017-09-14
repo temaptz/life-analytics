@@ -121,8 +121,7 @@ module.exports = (app, db) => {
                                 .collection('graphs')
                                 .findOneAndUpdate(
                                     {
-                                        _id     : ObjectId(graphId),
-                                        userId  : ObjectId(userId),
+                                        _id : ObjectId(graphId)
                                     },
                                     {
                                         $set: {

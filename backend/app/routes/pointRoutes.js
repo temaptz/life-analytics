@@ -12,12 +12,13 @@ module.exports = (app, db) => {
 
                     const userId  = user._id,
                         graphId   = request.params.graphId,
-                        value     = request.body.value;
+                        value     = request.body.value,
+                        remark    = request.body.remark;
 
                     authorization.checkGraphAccess(userId, graphId, db)
                         .then(() => {
 
-                            const newPoint = point.create(graphId, value);
+                            const newPoint = point.create(graphId, value, remark);
 
                             if ( !newPoint.value || !newPoint.graphId ) {
                                 response.status(500).send('Empty value');
@@ -77,6 +78,49 @@ module.exports = (app, db) => {
 
                                     response.send(err);
 
+                                });
+
+                        }, () => {
+
+                            authorization.accessDenied(response);
+
+                        });
+
+                }, () => {
+
+                    authorization.accessDenied(response);
+
+                });
+        })
+
+        // Добавление комментария для точки
+        .post('/points/:pointId/remark', (request, response) => {
+            authorization.getCurrentUserByHeader(request, db)
+                .then((user) => {
+
+                    const userId = user._id,
+                        pointId  = request.params.pointId,
+                        remark   = request.body.remark;
+
+                    authorization.checkPointAccess(userId, pointId, db)
+                        .then(() => {
+
+                            db
+                                .collection('points')
+                                .findOneAndUpdate(
+                                    {
+                                        _id : ObjectId(pointId),
+                                    },
+                                    {
+                                        $set: {
+                                            remark : remark
+                                        }
+                                    }
+                                )
+                                .then((res) => {
+                                    response.send(res);
+                                }, (err) => {
+                                    response.send(err);
                                 });
 
                         }, () => {

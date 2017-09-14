@@ -1,7 +1,7 @@
 const ObjectId = require('mongodb').ObjectID;
 
 // Конструктор точки
-module.exports.create = (graphId, value, date=null) => {
+module.exports.create = (graphId, value, remark=null, date=null) => {
     if ( !date ) {
         date = new Date;
     }
@@ -9,6 +9,7 @@ module.exports.create = (graphId, value, date=null) => {
     return {
         graphId : ObjectId(graphId),
         value   : value,
+        remark  : remark,
         date    : date
     };
 };

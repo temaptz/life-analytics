@@ -1,7 +1,7 @@
 const ObjectId = require('mongodb').ObjectID;
 
 // Получить запись пользователя по заголовку авторизации
-module.exports.getCurrentUserByHeader = (request, db) => {
+const getCurrentUserByHeader = (request, db) => {
 
     const authHeader = request.get('Authorization');
 
@@ -39,7 +39,7 @@ module.exports.getCurrentUserByHeader = (request, db) => {
 };
 
 // Проверить доступ пользователя к графику
-module.exports.checkGraphAccess = (userId, graphId, db) => {
+const checkGraphAccess = (userId, graphId, db) => {
 
     if ( userId && graphId ) {
 
@@ -67,7 +67,41 @@ module.exports.checkGraphAccess = (userId, graphId, db) => {
     return Promise.reject(false);
 };
 
+// Проверить доступ пользователя к графику
+const checkPointAccess = (userId, pointId, db) => {
+
+    if ( userId && pointId ) {
+
+        return db
+            .collection('points')
+            .findOne({
+                _id     : ObjectId(pointId),
+            })
+            .then((res) => {
+
+                if ( res && res.graphId ) {
+                    return checkGraphAccess(userId, res.graphId, db);
+                }
+
+                return Promise.reject(false);
+
+            }, () => {
+
+                return Promise.reject(false);
+
+            });
+
+    }
+
+    return Promise.reject(false);
+};
+
 // Показать ошибку доступа
-module.exports.accessDenied = (response) => {
+const accessDenied = (response) => {
     response.status(403).send('Access Denied');
 };
+
+module.exports.getCurrentUserByHeader = getCurrentUserByHeader;
+module.exports.checkGraphAccess       = checkGraphAccess;
+module.exports.checkPointAccess       = checkPointAccess;
+module.exports.accessDenied           = accessDenied;
