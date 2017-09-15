@@ -3,37 +3,46 @@ import moment from 'moment';
 
 class GraphTooltip extends React.Component {
 
-    GraphTooltipStyle = {
+    TooltipStyle = {
         padding : '5px',
         backgroundColor : '#fff',
         border : '1px solid #eee',
         borderRadius : '5px'
     };
 
-    GraphTooltipLabelStyle = {
+    LabelStyle = {
         margin : '0',
         fontSize : '.7em'
     };
 
-    GraphTooltipValueStyle = {
-        margin : '0'
+    ValueStyle = {
+        margin : '5px 0',
+        fontSize: '1.4em'
+    };
+
+    RemarkStyle = {
+        margin : '0',
+        fontSize: '1em'
     };
 
     render() {
 
-        const { payload, label, unitName } = this.props;
+        const { payload, unitName } = this.props;
 
         if ( !payload || payload.length === 0 ) {
             return null;
         }
 
-        let date  = moment.unix(label).format('DD.MM.YYYY HH:mm'),
-            value = payload[0].value;
+        const point = payload[0].payload,
+            date    = moment.unix(point.unixtime).format('DD.MM.YYYY HH:mm'),
+            value   = point.value,
+            remark  = point.remark;
 
         return (
-            <div style={this.GraphTooltipStyle}>
-                <p style={ this.GraphTooltipLabelStyle }>{ date }</p>
-                <p style={ this.GraphTooltipValueStyle }>{ value } { unitName }</p>
+            <div style={this.TooltipStyle}>
+                <p style={ this.LabelStyle }>{ date }</p>
+                <p style={ this.ValueStyle }>{ value } { unitName }</p>
+                <p style={ this.RemarkStyle }>{ remark }</p>
             </div>
         );
     }

@@ -19,7 +19,7 @@ class MainContainer extends React.Component {
 
                 <RechartsGraph points={ this.props.Point.points }
                                graphName={ this.props.Graph.name }
-                               unitName={ this.props.Graph.unitName } />
+                               unitName={ this.props.Unit.name } />
                 <hr />
                 <AddPointForm graphId={ this.props.Graph.id }
                               fetching={ this.props.Point.fetching }

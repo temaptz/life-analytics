@@ -3,7 +3,7 @@ import * as actionTypes from '../constants/ActionTypes';
 const initialState = {
     id                : '',
     name              : '',
-    unitName          : '',
+    unitId            : '',
     graphList         : [],
     fetching          : false,
     showAddGraphModal : false
@@ -25,10 +25,10 @@ export default function graphState(state = initialState, action) {
 
         // Выбор графика (получение с сервера)
         case actionTypes.SELECT_GRAPH_REQUEST:
-            return { ...state, id: undefined, fetching: true };
+            return { ...state, id: '', fetching: true };
 
         case actionTypes.SELECT_GRAPH_SUCCESS:
-            return { ...state, id: action.payload._id, name: action.payload.name, unitName: action.payload.unitId, fetching: false };
+            return { ...state, id: action.payload._id, name: action.payload.name, unitId: action.payload.unitId, fetching: false };
 
         case actionTypes.SELECT_GRAPH_ERROR:
             return { ...state, id: undefined, fetching: false };

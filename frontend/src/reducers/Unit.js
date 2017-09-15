@@ -2,7 +2,8 @@ import * as actionTypes from '../constants/ActionTypes';
 
 const initialState = {
     list     : [],
-    fetching : false
+    fetching : false,
+    name     : ''
 };
 
 export default function graphState(state = initialState, action) {
@@ -17,6 +18,17 @@ export default function graphState(state = initialState, action) {
 
         case actionTypes.GET_UNIT_LIST_ERROR:
             return { ...state, list: [], fetching: false };
+
+
+        // Получение единицы измерения
+        case actionTypes.GET_UNIT_REQUEST:
+            return { ...state, name: '', fetching: true };
+
+        case actionTypes.GET_UNIT_SUCCESS:
+            return { ...state, name: action.payload.name, fetching: false };
+
+        case actionTypes.GET_UNIT_ERROR:
+            return { ...state, name: '', fetching: false };
 
 
         // Сброс состояния единиц измерения

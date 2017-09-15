@@ -2,6 +2,7 @@ import { call, put, takeLatest, select } from 'redux-saga/effects';
 import * as actionTypes from '../constants/ActionTypes';
 import * as graphApi from '../api/graphApi';
 import * as pointsApi from '../api/pointsApi';
+import * as unitApi from '../api/unitApi';
 
 // Выбор текущего графика после обновлении списка графиков
 function* selectDefaultGraph(action) {
@@ -88,6 +89,34 @@ function* getGraphPoints(action) {
     }
 }
 
+// Получение единицы измерени графика после выбора графика
+function* getGraphUnitName(action) {
+    try {
+
+        const state = yield select();
+
+        yield put({
+            type: actionTypes.GET_UNIT_REQUEST,
+            payload: null
+        });
+
+        const unit = yield call(unitApi.getUnit, state.Graph.unitId);
+
+        yield put({
+            type: actionTypes.GET_UNIT_SUCCESS,
+            payload: unit
+        });
+
+    } catch (e) {
+
+        yield put({
+            type: actionTypes.GET_UNIT_ERROR,
+            payload: null
+        });
+
+    }
+}
+
 // Обновление списка графиков после добавления или удаления графика
 function* updateGraphList(action) {
     try {
@@ -121,6 +150,9 @@ function* graphSaga() {
 
     // Получение точек графика после выбора графика
     yield takeLatest(actionTypes.SELECT_GRAPH_SUCCESS, getGraphPoints);
+
+    // Получение единицы измерени графика после выбора графика
+    yield takeLatest(actionTypes.SELECT_GRAPH_SUCCESS, getGraphUnitName);
 
     // Обновление списка графиков после добавления графика
     yield takeLatest(actionTypes.ADD_GRAPH_SUCCESS, updateGraphList);

@@ -16,3 +16,18 @@ export function getUnitList() {
         .then((json) => { return json });
 
 }
+
+// Получение единицы измерения
+export function getUnit(id) {
+
+    return fetch(apiUrl + '/unit/' + id,
+        {
+            method : 'GET',
+            headers: {
+                'Authorization': 'Token ' + browserStorage.get(storage.USER_TOKEN)
+            }
+        })
+        .then((response) => response.json())
+        .then((json) => { return json });
+
+}
