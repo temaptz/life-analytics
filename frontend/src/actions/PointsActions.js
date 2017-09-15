@@ -1,40 +1,8 @@
 import * as actionTypes from '../constants/ActionTypes';
 import * as pointsApi from '../api/pointsApi';
 
-// Получить точки графика
-export function getPoints(graphId) {
-
-    return (dispatch) => {
-        dispatch({
-            type    : actionTypes.GET_POINTS_REQUEST,
-            payload : null
-        });
-
-        pointsApi
-            .getGraphPoints(graphId)
-            .then((points) => {
-
-                dispatch({
-                    type    : actionTypes.GET_POINTS_SUCCESS,
-                    payload : points
-                });
-
-            })
-            .catch((err) => {
-
-                dispatch({
-                    type    : actionTypes.GET_POINTS_ERROR,
-                    payload : err
-                });
-
-            });
-
-    }
-
-}
-
 // Добавить точку
-export function addPoint(value, graphId) {
+export function addPoint(value, remark, graphId) {
 
     return (dispatch) => {
         dispatch({
@@ -43,7 +11,7 @@ export function addPoint(value, graphId) {
         });
 
         pointsApi
-            .addGraphPoint(graphId, value)
+            .addGraphPoint(graphId, value, remark)
             .then((res) => {
 
                 dispatch({

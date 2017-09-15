@@ -18,7 +18,7 @@ export function getGraphPoints(graphId) {
 }
 
 // Добавить точку графика
-export function addGraphPoint(graphId, value) {
+export function addGraphPoint(graphId, value, remark) {
 
     return fetch(apiUrl + '/graph/'+graphId+'/points',
         {
@@ -28,7 +28,8 @@ export function addGraphPoint(graphId, value) {
             },
             body   : JSON.stringify({
                 graphId : graphId,
-                value   : value
+                value   : value,
+                remark  : remark
             })
         })
         .then((response) => response.json())
