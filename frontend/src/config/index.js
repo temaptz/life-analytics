@@ -1,2 +1,2 @@
 export const apiUrl = 'http://localhost:8000';
-export const googleClientId = '950154841564-2sv9i8qvhpriadqckbvreg3ki93g15h9.apps.googleusercontent.com';
+export const googleClientId = '658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com';

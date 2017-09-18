@@ -82,18 +82,6 @@ class RechartsGraph extends React.Component {
         this.setState({ maxUnixtime : timeLimits.unixTo });
     }
 
-    // Проверить, находится ли точка в заданном интервале времени
-    pointInTimeLimits(point, timeLimits) {
-        const pointUnixtime = moment(point.date).unix();
-
-        // console.log(timeLimits.from, moment(point.date).format(), timeLimits.to);
-        //
-        // console.log(( pointUnixtime >= timeLimits.unixFrom && pointUnixtime <= timeLimits.unixTo ), timeLimits.unixFrom, pointUnixtime, timeLimits.unixTo);
-
-
-        return ( pointUnixtime >= timeLimits.unixFrom && pointUnixtime <= timeLimits.unixTo );
-    }
-
     // Преобразовать сущность точки
     formatPointData(point) {
         const pointMoment = moment(point.date);
