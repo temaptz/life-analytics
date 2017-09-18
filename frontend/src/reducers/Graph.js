@@ -1,12 +1,14 @@
 import * as actionTypes from '../constants/ActionTypes';
+import * as timePeriods from '../constants/TimePeriods';
 
 const initialState = {
     id                : '',
     name              : '',
     unitId            : '',
     graphList         : [],
-    fetching          : false,
-    showAddGraphModal : false
+    showAddGraphModal : false,
+    periodName        : timePeriods.PERIOD_DEFAULT,
+    fetching          : false
 };
 
 export default function graphState(state = initialState, action) {
@@ -62,6 +64,11 @@ export default function graphState(state = initialState, action) {
 
         case actionTypes.HIDE_ADD_GRAPH_MODAL:
             return { ...state, showAddGraphModal: false };
+
+
+        // Выбор периода времени для отображения графика
+        case actionTypes.SET_GRAPH_PERIOD:
+            return { ...state, periodName: action.payload.name };
 
 
         // Сброс состояния графиков

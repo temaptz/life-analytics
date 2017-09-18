@@ -1,8 +1,10 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import * as actionTypes from '../constants/ActionTypes';
+import * as timePeriods from '../constants/TimePeriods';
 import * as graphApi from '../api/graphApi';
 import * as pointsApi from '../api/pointsApi';
 import * as unitApi from '../api/unitApi';
+import { getTimeLimitsByPeriodName } from '../helpers/timePeriod';
 
 // Выбор текущего графика после обновлении списка графиков
 function* selectDefaultGraph(action) {
@@ -61,8 +63,24 @@ function* selectDefaultGraph(action) {
     }
 }
 
-// Получение точек графика после выбора графика
-function* getGraphPoints(action) {
+// Выбор временного периода после выбора графика
+function* setGraphPeriod(action) {
+    try {
+
+        yield put({
+            type: actionTypes.SET_GRAPH_PERIOD,
+            payload: { name : timePeriods.PERIOD_DEFAULT }
+        });
+
+    } catch (e) {
+
+        location.reload();
+
+    }
+}
+
+// Обновление точек графика после изменения временного периода
+export function* getGraphPoints(action) {
     try {
 
         const state = yield select();
@@ -72,7 +90,11 @@ function* getGraphPoints(action) {
             payload: null
         });
 
-        const points = yield call(pointsApi.getGraphPoints, state.Graph.id);
+        const timeLimits = getTimeLimitsByPeriodName(state.Graph.periodName);
+        let from = ( timeLimits.noLimit ) ? null : timeLimits.from,
+            to   = ( timeLimits.noLimit ) ? null : timeLimits.to;
+
+        const points = yield call(pointsApi.getGraphPoints, state.Graph.id, from, to);
 
         yield put({
             type: actionTypes.GET_POINTS_SUCCESS,
@@ -148,8 +170,11 @@ function* graphSaga() {
     // Выбор графика после обновления списка
     yield takeLatest(actionTypes.GET_GRAPH_LIST_SUCCESS, selectDefaultGraph);
 
-    // Получение точек графика после выбора графика
-    yield takeLatest(actionTypes.SELECT_GRAPH_SUCCESS, getGraphPoints);
+    // Выбор временного периода после выбора графика
+    yield takeLatest(actionTypes.SELECT_GRAPH_SUCCESS, setGraphPeriod);
+
+    // Получение точек графика после изменения временного периода
+    yield takeLatest(actionTypes.SET_GRAPH_PERIOD, getGraphPoints);
 
     // Получение единицы измерени графика после выбора графика
     yield takeLatest(actionTypes.SELECT_GRAPH_SUCCESS, getGraphUnitName);

@@ -2,6 +2,7 @@ import React from 'react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import GraphTooltip from './GraphTooltip';
 import moment from 'moment';
+import { getTimeLimitsByPeriodName } from '../../helpers/timePeriod';
 
 class RechartsGraph extends React.Component {
 
@@ -9,9 +10,11 @@ class RechartsGraph extends React.Component {
         super(props);
 
         this.state = {
-            points   : [],
-            minValue : 0,
-            maxValue : 0
+            points      : [],
+            minValue    : 0,
+            maxValue    : 0,
+            minUnixtime : 0,
+            maxUnixtime : 0
         };
     }
 
@@ -23,6 +26,8 @@ class RechartsGraph extends React.Component {
             <div>
                 <h5>{ graphName }</h5>
 
+                {this.state.minUnixtime} - {this.state.maxUnixtime}
+
                 <ResponsiveContainer width="100%"
                                      height={ 300 }>
 
@@ -30,8 +35,9 @@ class RechartsGraph extends React.Component {
 
                         <XAxis dataKey="unixtime"
                                type="number"
-                               domain={ ['dataMin', 'dataMax'] }
-                               hide={ true } />
+                               domain={ [this.state.minUnixtime, this.state.maxUnixtime] }
+                               hide={ false }
+                               tickFormatter={this.tickFormatter} />
 
                         <YAxis domain={ [this.state.minValue, this.state.maxValue] } />
 
@@ -40,8 +46,7 @@ class RechartsGraph extends React.Component {
                         <Line type="monotone"
                               dataKey="value"
                               stroke="#0275d8"
-                              activeDot={{r: 7}}
-                              onClick={ this.pointClick.bind(this) } />
+                              activeDot={{r: 7}} />
 
                     </LineChart>
 
@@ -56,28 +61,42 @@ class RechartsGraph extends React.Component {
 
         const pointsSource = nextProps.points || null;
 
+        const timeLimits   = getTimeLimitsByPeriodName(this.props.periodName);
+
         if ( pointsSource && pointsSource.length > 0 ) {
 
             pointsSource.forEach((pointSrc) => {
 
-                let point = this.formatPointData(pointSrc);
-
-                points.push(point);
+                points.push(this.formatPointData(pointSrc));
 
             });
 
         }
 
-        const limits = this.getPointsLimits(points);
+        const valuesLimits = this.getValuesLimits(points);
 
-        this.setState({ points: points });
-        this.setState({ minValue: limits.minValue });
-        this.setState({ maxValue: limits.maxValue });
+        this.setState({ points : points });
+        this.setState({ minValue : valuesLimits.minValue });
+        this.setState({ maxValue : valuesLimits.maxValue });
+        this.setState({ minUnixtime : timeLimits.unixFrom });
+        this.setState({ maxUnixtime : timeLimits.unixTo });
+    }
+
+    // Проверить, находится ли точка в заданном интервале времени
+    pointInTimeLimits(point, timeLimits) {
+        const pointUnixtime = moment(point.date).unix();
+
+        // console.log(timeLimits.from, moment(point.date).format(), timeLimits.to);
+        //
+        // console.log(( pointUnixtime >= timeLimits.unixFrom && pointUnixtime <= timeLimits.unixTo ), timeLimits.unixFrom, pointUnixtime, timeLimits.unixTo);
+
+
+        return ( pointUnixtime >= timeLimits.unixFrom && pointUnixtime <= timeLimits.unixTo );
     }
 
     // Преобразовать сущность точки
     formatPointData(point) {
-        let pointMoment = moment(point.date);
+        const pointMoment = moment(point.date);
 
         return {
             value    : parseFloat(point.value),
@@ -88,7 +107,7 @@ class RechartsGraph extends React.Component {
     }
 
     // Поиск минимального и максимального значений графика
-    getPointsLimits(points) {
+    getValuesLimits(points) {
         let minValue = null,
             maxValue = null;
 
@@ -118,9 +137,9 @@ class RechartsGraph extends React.Component {
         return limits;
     }
 
-    // Клик по точке графика
-    pointClick(data, index) {
-        console.log(data, index);
+    // Форматирование меток на шкале времени
+    tickFormatter(unixtime) {
+        return moment(unixtime, 'X').format('DD.MM.YYYY');
     }
 
 }

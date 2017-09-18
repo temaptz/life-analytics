@@ -1,37 +1,6 @@
 import * as actionTypes from '../constants/ActionTypes';
 import * as graphApi from '../api/graphApi';
 
-// Получение списка графиков
-export function getGraphList() {
-
-    return (dispatch) => {
-        dispatch({
-            type    : actionTypes.GET_GRAPH_LIST_REQUEST,
-            payload : null
-        });
-
-        graphApi
-            .getGraphList()
-            .then((res) => {
-
-                dispatch({
-                    type    : actionTypes.GET_GRAPH_LIST_SUCCESS,
-                    payload : res
-                });
-
-            })
-            .catch((err) => {
-
-                dispatch({
-                    type    : actionTypes.GET_GRAPH_LIST_ERROR,
-                    payload : err
-                });
-
-            });
-    }
-
-}
-
 // Выбрать график из списка
 export function selectGraph(id) {
 
@@ -147,6 +116,18 @@ export function deleteGraph(id) {
                 });
 
             });
+    }
+
+}
+
+// Выбрать период отображения графика
+export function setGraphPeriod(periodName) {
+
+    return (dispatch) => {
+        dispatch({
+            type    : actionTypes.SET_GRAPH_PERIOD,
+            payload : { name: periodName }
+        });
     }
 
 }

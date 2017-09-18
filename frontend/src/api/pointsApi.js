@@ -3,9 +3,21 @@ import * as storage from '../constants/Storage';
 import * as browserStorage from '../helpers/browserStorage';
 
 // Получение точек графика
-export function getGraphPoints(graphId) {
+export function getGraphPoints(graphId, from=null, to=null) {
 
-    return fetch(apiUrl + '/graph/'+graphId+'/points',
+    let url = apiUrl + '/graph/'+graphId+'/points';
+
+    if ( from && to ) {
+        const params = new URLSearchParams();
+
+        params.append('from', from);
+        params.append('to', to);
+
+        url += '?' + params.toString();
+    }
+
+
+    return fetch(url,
         {
             method : 'GET',
             headers: {

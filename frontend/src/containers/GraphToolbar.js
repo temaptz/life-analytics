@@ -3,8 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import SelectGraph from '../components/SelectGraph';
 import AddGraphButton from '../components/AddGraph/AddGraphButton';
-import DeleteGraphButton from '../components/deleteGraphButton';
+import DeleteGraphButton from '../components/DeleteGraphButton';
 import AddGraphModal from '../components/AddGraph/AddGraphModal';
+import TimePeriodPanel from '../components/TimePeriod/TimePeriodPanel';
 import * as actions from '../actions/GraphsActions';
 
 class GraphToolbar extends React.Component {
@@ -36,6 +37,9 @@ class GraphToolbar extends React.Component {
                     </div>
 
                 </div>
+
+                <TimePeriodPanel currentPeriodName={ this.props.Graph.periodName }
+                                   onSetPeriod={ this.props.setGraphPeriod } />
 
                 <AddGraphModal showModal={ this.props.Graph.showAddGraphModal }
                                onSave={ this.props.addGraph }
