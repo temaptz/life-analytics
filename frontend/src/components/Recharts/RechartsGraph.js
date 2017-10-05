@@ -55,7 +55,11 @@ class RechartsGraph extends React.Component {
                                tickSize={ 5 }
                         />
 
-                        <Tooltip content={ <GraphTooltip unitName={ unitName } /> }
+                        <Tooltip content={
+                                     <GraphTooltip unitName={ unitName }
+
+                                     />
+                                 }
                         />
 
                         <Line type="monotone"
@@ -106,10 +110,11 @@ class RechartsGraph extends React.Component {
         const pointMoment = moment(point.date);
 
         return {
-            value    : parseFloat(point.value),
-            date     : pointMoment.format('DD.MM.YYYY HH:mm'),
-            unixtime : pointMoment.unix(),
-            remark   : point.remark
+            value     : parseFloat(point.value),
+            date      : pointMoment.format('DD.MM.YYYY HH:mm'),
+            unixtime  : pointMoment.unix(),
+            remark    : point.remark,
+            isVirtual : point.isVirtual
         };
     }
 

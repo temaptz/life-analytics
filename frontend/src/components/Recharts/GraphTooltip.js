@@ -33,10 +33,15 @@ class GraphTooltip extends React.Component {
             return null;
         }
 
-        const point = payload[0].payload,
-            date    = moment.unix(point.unixtime).format('DD.MM.YYYY HH:mm'),
-            value   = point.value,
-            remark  = point.remark;
+        const point   = payload[0].payload,
+            date      = moment.unix(point.unixtime).format('DD.MM.YYYY HH:mm'),
+            value     = point.value,
+            remark    = point.remark,
+            isVirtual = point.isVirtual;
+
+        if ( isVirtual ) {
+            return null;
+        }
 
         return (
             <div style={this.TooltipStyle}>
