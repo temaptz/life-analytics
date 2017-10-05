@@ -6,7 +6,6 @@ const initialState = {
     name              : '',
     unitId            : '',
     graphList         : [],
-    showAddGraphModal : false,
     periodName        : timePeriods.PERIOD_DEFAULT,
     fetching          : false
 };
@@ -56,14 +55,6 @@ export default function graphState(state = initialState, action) {
 
         case actionTypes.DELETE_GRAPH_ERROR:
             return { ...state, fetching: false };
-
-
-        // Модальное окно добавления графика
-        case actionTypes.SHOW_ADD_GRAPH_MODAL:
-            return { ...state, showAddGraphModal: true };
-
-        case actionTypes.HIDE_ADD_GRAPH_MODAL:
-            return { ...state, showAddGraphModal: false };
 
 
         // Выбор периода времени для отображения графика

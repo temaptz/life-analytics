@@ -1,0 +1,87 @@
+@import 'variables';
+@import 'form-controls';
+
+body {
+  min-height: 100vh;
+  background-image: url('/img/bg.jpg');
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #fff;
+  color: $text-color-dark;
+  font-family: $font-family;
+}
+
+@media only screen
+  and (max-device-width : 480px) {
+
+  body {
+    font-size: .9em;
+  }
+  h1 {
+    font-size: 1.5em;
+  }
+  h2 {
+    font-size: 1.3em;
+    margin: .5em 0;
+  }
+  .main-container {
+    width: 99% !important;
+  }
+  .time-filter button {
+    padding: $default-ident $default-ident !important;
+  }
+  .select-graph select {
+    padding-left: $default-ident !important;
+    padding-right: $default-ident * 3 !important;
+  }
+  .add-point-container {
+    text-align: center;
+  }
+  .modal {
+    padding: $default-ident * 2 !important;
+  }
+  .modal .buttons button {
+    margin-left: $default-ident / 2 !important;
+  }
+}
+
+@media only screen
+  and (min-device-width : 481px)
+  and (max-device-width : 768px) {
+
+  .main-container {
+    width: 99% !important;
+  }
+}
+
+@media only screen
+  and (min-device-width : 769px)
+  and (max-device-width : 1024px) {
+
+  .main-container {
+    width: 95% !important;
+  }
+}
+
+@media only screen
+and (min-device-width : 1025px) {
+
+
+}
+
+@media only screen
+and ( max-width: 768px ) {
+
+  .graph-toolbar .graph-actions {
+    flex-basis: unset;
+  }
+
+  .user-toolbar .helper {
+    display: none;
+  }
+
+  .user-toolbar .header {
+    text-align: left;
+  }
+}

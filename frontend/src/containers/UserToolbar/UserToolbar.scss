@@ -1,0 +1,30 @@
+@import '../../style/variables';
+
+.user-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.user-toolbar > div {
+  align-self: center;
+}
+
+.user-toolbar .helper {
+  flex: 1 1 $third-part;
+}
+
+.user-toolbar .header {
+  flex: 1 1 $third-part;
+  text-align: center;
+  text-shadow: $text-shadow;
+}
+
+.user-toolbar .user {
+  flex: 1 1 $third-part;
+  text-align: right;
+  text-shadow: $text-shadow;
+}
+
+.user-toolbar .sign-out-button {
+  margin-left: $default-ident;
+}

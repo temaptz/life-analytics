@@ -1,0 +1,51 @@
+@import '../../style/variables';
+
+.modal-container {
+  position: absolute;
+  display: flex;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(55, 55, 55, 0.55);
+  z-index: 999;
+}
+
+.modal-container.hidden {
+  display: none;
+}
+
+.modal {
+  margin: auto auto;
+  padding: $default-ident * 3;
+  background-color: #fff;
+  border-radius: $border-radius;
+}
+
+.modal .content {
+  text-align: left;
+}
+
+.modal .buttons {
+  margin-top: $default-ident * 2;
+  text-align: right;
+}
+
+.modal .buttons button:first-child {
+  margin-left: 0;
+}
+
+.modal .buttons button {
+  margin-left: $default-ident;
+}
+
+.modal form {
+  position: relative;
+  text-align: left;
+}
+
+.modal input, .modal select {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: $default-ident;
+}

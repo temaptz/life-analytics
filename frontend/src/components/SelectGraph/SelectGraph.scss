@@ -1,0 +1,9 @@
+@import '../../style/variables';
+
+.select-graph select {
+  padding: $default-ident $default-ident * 4 $default-ident $default-ident * 2;
+}
+
+.select-graph select:hover {
+  background-color: darken($light-input-color, 7%);
+}

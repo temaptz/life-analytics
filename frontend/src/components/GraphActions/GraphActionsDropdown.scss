@@ -1,0 +1,36 @@
+@import '../../style/variables';
+
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: $default-ident;
+  background: #fff;
+  text-align: left;
+  z-index: 9;
+  max-height: 500px;
+  transition: $transition-max-height;
+  overflow: hidden;
+  border-radius: $border-radius;
+}
+
+.dropdown.hidden {
+  max-height: 0px;
+}
+
+.dropdown button {
+  width: 100%;
+  background-color: $light-input-color;
+  color: $text-color-dark;
+  text-align: left;
+}
+
+.dropdown button:hover {
+  background-color: darken($light-input-color, 7%);
+  color: $text-color-dark;
+}

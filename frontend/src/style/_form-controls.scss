@@ -1,0 +1,163 @@
+@import 'variables';
+
+button {
+  display: inline-block;
+  padding: $default-ident $default-ident * 2;
+  background-color: $button-color;
+  font-size: 1em;
+  color: #fff;
+  border: none;
+  border-radius: $border-radius;
+  text-align: center;
+  text-decoration: none;
+  font-family: $font-family;
+  outline: none;
+  white-space: nowrap;
+  transition: $transition-background;
+  cursor: pointer;
+}
+
+button.active {
+  background-color: darken($button-color, 10%);
+}
+
+button:hover {
+  background-color: darken($button-color, 17%);
+}
+
+button:disabled {
+  background-color: lighten($button-color, 20%);
+}
+
+button.secondary {
+  background-color: $button-secondary-color;
+}
+
+button.secondary.active {
+  background-color: darken($button-secondary-color, 10%);
+}
+
+button.secondary:hover {
+  background-color: darken($button-secondary-color, 17%);
+}
+
+button.secondary:disabled {
+  background-color: lighten($button-secondary-color, 20%);
+}
+
+button.warning {
+  background-color: $button-warning-color;
+}
+
+button.warning.active {
+  background-color: darken($button-warning-color, 10%);
+}
+
+button.warning:hover {
+  background-color: darken($button-warning-color, 15%);
+}
+
+button.warning:disabled {
+  background-color: lighten($button-warning-color, 20%);
+}
+
+button.adding {
+  background-color: $button-adding-color;
+}
+
+button.adding.active {
+  background-color: darken($button-adding-color, 5%);
+}
+
+button.adding:hover {
+  background-color: darken($button-adding-color, 10%);
+}
+
+button.adding:disabled {
+  background-color: lighten($button-adding-color, 15%);
+}
+
+button i {
+  margin-right: $default-ident;
+}
+
+i.button {
+  cursor: pointer;
+}
+
+i.button:hover {
+  color: darken( $text-color-dark, 15% );
+}
+
+select {
+  display: inline-block;
+  padding: $default-ident;
+  background-image: url('/img/arrow.png');
+  background-position: right $default-ident center;
+  background-repeat: no-repeat;
+  background-color: $light-input-color;
+  text-align: left;
+  font-size: 1em;
+  text-decoration: none;
+  font-family: $font-family;
+  color: $text-color-dark;
+  border: $light-input-border;
+  border-radius: $border-radius;
+  outline: none;
+  appearance: none;
+  transition: $transition-background;
+}
+
+select:hover {
+  background-color: darken($light-input-color, 3%);
+}
+
+input {
+  display: inline-block;
+  padding: $default-ident;
+  background-color: $light-input-color;
+  text-align: left;
+  font-size: 1em;
+  text-decoration: none;
+  font-family: $font-family;
+  color: $text-color-dark;
+  border: $light-input-border;
+  border-radius: $border-radius;
+  outline: none;
+  transition: $transition-background;
+}
+
+input[type=text]:hover, input[type=text]:focus {
+  background-color: darken($light-input-color, 3%);
+}
+
+label {
+  display: block;
+  padding: $default-ident 0;
+  text-align: left;
+  font-size: 1em;
+  text-decoration: none;
+  font-family: $font-family;
+  color: $text-color-dark;
+  outline: none;
+}
+
+.input-group button,
+.input-group input,
+.input-group select {
+  border-radius: 0;
+  border-right: 1px solid darken($button-color, 20%);
+}
+
+.input-group button:last-child,
+.input-group input:last-child,
+.input-group select:first-child {
+  border-radius: $border-radius 0 0 $border-radius;
+}
+
+.input-group button:last-child,
+.input-group input:last-child,
+.input-group select:last-child {
+  border-radius: 0 $border-radius $border-radius 0;
+  border-right: none;
+}

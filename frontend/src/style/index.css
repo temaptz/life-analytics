@@ -1,0 +1,182 @@
+button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #0072ff;
+  font-size: 1em;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  text-align: center;
+  text-decoration: none;
+  font-family: "Open Sans", "sans-serif";
+  outline: none;
+  white-space: nowrap;
+  transition: background-color 0.2s ease-in-out;
+  cursor: pointer; }
+
+button.active {
+  background-color: #005bcc; }
+
+button:hover {
+  background-color: #004ba8; }
+
+button:disabled {
+  background-color: #66aaff; }
+
+button.secondary {
+  background-color: #999; }
+
+button.secondary.active {
+  background-color: gray; }
+
+button.secondary:hover {
+  background-color: #6e6e6e; }
+
+button.secondary:disabled {
+  background-color: #cccccc; }
+
+button.warning {
+  background-color: #ff002b; }
+
+button.warning.active {
+  background-color: #cc0022; }
+
+button.warning:hover {
+  background-color: #b3001e; }
+
+button.warning:disabled {
+  background-color: #ff6680; }
+
+button.adding {
+  background-color: #44af3d; }
+
+button.adding.active {
+  background-color: #3d9c36; }
+
+button.adding:hover {
+  background-color: #358930; }
+
+button.adding:disabled {
+  background-color: #72cc6d; }
+
+button i {
+  margin-right: 10px; }
+
+i.button {
+  cursor: pointer; }
+
+i.button:hover {
+  color: #0d0d0d; }
+
+select {
+  display: inline-block;
+  padding: 10px;
+  background-image: url("/img/arrow.png");
+  background-position: right 10px center;
+  background-repeat: no-repeat;
+  background-color: #fff;
+  text-align: left;
+  font-size: 1em;
+  text-decoration: none;
+  font-family: "Open Sans", "sans-serif";
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  outline: none;
+  appearance: none;
+  transition: background-color 0.2s ease-in-out; }
+
+select:hover {
+  background-color: #f7f7f7; }
+
+input {
+  display: inline-block;
+  padding: 10px;
+  background-color: #fff;
+  text-align: left;
+  font-size: 1em;
+  text-decoration: none;
+  font-family: "Open Sans", "sans-serif";
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  outline: none;
+  transition: background-color 0.2s ease-in-out; }
+
+input[type=text]:hover, input[type=text]:focus {
+  background-color: #f7f7f7; }
+
+label {
+  display: block;
+  padding: 10px 0;
+  text-align: left;
+  font-size: 1em;
+  text-decoration: none;
+  font-family: "Open Sans", "sans-serif";
+  color: #333;
+  outline: none; }
+
+.input-group button,
+.input-group input,
+.input-group select {
+  border-radius: 0;
+  border-right: 1px solid #004499; }
+
+.input-group button:last-child,
+.input-group input:last-child,
+.input-group select:first-child {
+  border-radius: 3px 0 0 3px; }
+
+.input-group button:last-child,
+.input-group input:last-child,
+.input-group select:last-child {
+  border-radius: 0 3px 3px 0;
+  border-right: none; }
+
+body {
+  min-height: 100vh;
+  background-image: url("/img/bg.jpg");
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #fff;
+  color: #333;
+  font-family: "Open Sans", "sans-serif"; }
+
+@media only screen and (max-device-width: 480px) {
+  body {
+    font-size: .9em; }
+  h1 {
+    font-size: 1.5em; }
+  h2 {
+    font-size: 1.3em;
+    margin: .5em 0; }
+  .main-container {
+    width: 99% !important; }
+  .time-filter button {
+    padding: 10px 10px !important; }
+  .select-graph select {
+    padding-left: 10px !important;
+    padding-right: 30px !important; }
+  .add-point-container {
+    text-align: center; }
+  .modal {
+    padding: 20px !important; }
+  .modal .buttons button {
+    margin-left: 5px !important; } }
+
+@media only screen and (min-device-width: 481px) and (max-device-width: 768px) {
+  .main-container {
+    width: 99% !important; } }
+
+@media only screen and (min-device-width: 769px) and (max-device-width: 1024px) {
+  .main-container {
+    width: 95% !important; } }
+
+@media only screen and (max-width: 768px) {
+  .graph-toolbar .graph-actions {
+    flex-basis: unset; }
+  .user-toolbar .helper {
+    display: none; }
+  .user-toolbar .header {
+    text-align: left; } }

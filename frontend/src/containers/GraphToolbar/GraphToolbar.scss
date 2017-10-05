@@ -1,0 +1,27 @@
+@import '../../style/variables';
+
+.graph-toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.graph-toolbar .time-filter {
+  flex-basis: $third-part;
+  margin-right: auto;
+  margin-bottom: $default-ident / 2;
+  white-space: nowrap;
+}
+
+.graph-toolbar .select-graph {
+  margin-bottom: $default-ident / 2;
+  text-align: center;
+}
+
+.graph-toolbar .graph-actions {
+  flex-basis: $third-part;
+  margin-left: auto;
+  margin-bottom: $default-ident / 2;
+  text-align: right;
+}

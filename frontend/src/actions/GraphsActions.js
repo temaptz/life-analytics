@@ -50,8 +50,6 @@ export function addGraph(name, unitId) {
                     payload : res
                 });
 
-                dispatch(hideAddGraphModal());
-
             })
             .catch((res) => {
 
@@ -62,30 +60,6 @@ export function addGraph(name, unitId) {
 
             });
 
-    }
-
-}
-
-// Показать модальное окно добавления графика
-export function showAddGraphModal() {
-
-    return (dispatch) => {
-        dispatch({
-            type    : actionTypes.SHOW_ADD_GRAPH_MODAL,
-            payload : null
-        });
-    }
-
-}
-
-// Скрыть модальное окно добавления графика
-export function hideAddGraphModal() {
-
-    return (dispatch) => {
-        dispatch({
-            type    : actionTypes.HIDE_ADD_GRAPH_MODAL,
-            payload : null
-        });
     }
 
 }

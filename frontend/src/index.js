@@ -5,7 +5,7 @@ import configureStore from './store/configureStore';
 import App from './containers/App';
 import 'normalize.css/normalize.css';
 import 'font-awesome/css/font-awesome.css';
-import './index.scss';
+import './style/index.css';
 
 const store = configureStore();
 

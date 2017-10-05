@@ -13,6 +13,8 @@
     <meta name="msapplication-config" content="/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
 
+    <link rel="stylesheet" href="/fonts/fonts.css">
+
     <!--
       Notice the use of %PUBLIC_URL% in the tag above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -26,15 +28,7 @@
   </head>
   <body>
     <div id="root">
-      <img src="/img/preloader.gif"
-           alt=">>>"
-           style="position: absolute;
-                  top: 50%;
-                  left: 50%;
-                  width: 64px;
-                  height: 22px;
-                  margin-top: -11px;
-                  margin-left: -32px;">
+      <div class="loader"></div>
     </div>
     <!--
       This HTML file is a template.
@@ -47,4 +41,23 @@
       To create a production bundle, use `npm run build`.
     -->
   </body>
+  <style>
+    .loader {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: -35px 0 0 -35px;
+      border: 7px solid #fff;
+      border-top: 7px solid #3498db;
+      border-radius: 50%;
+      width: 70px;
+      height: 70px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
 </html>

@@ -3,6 +3,7 @@ import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'rec
 import GraphTooltip from './GraphTooltip';
 import moment from 'moment';
 import { getTimeLimitsByPeriodName } from '../../helpers/timePeriod';
+import './RechartsGraph.css';
 
 class RechartsGraph extends React.Component {
 
@@ -20,13 +21,15 @@ class RechartsGraph extends React.Component {
 
     render() {
 
-        const { graphName, unitName } = this.props;
+        const { unitName } = this.props,
+            axisColor = '#333',
+            lineColor = '#005bcc',
+            lineWidth = 1.5,
+            axisStyle = {stroke: axisColor, strokeWidth: 1},
+            tickStyle = {stroke: axisColor, strokeWidth: 1, fontSize: 14, fill: '#fff', fillOpacity: 0.5};
 
         return (
-            <div>
-                <h5>{ graphName }</h5>
-
-                {this.state.minUnixtime} - {this.state.maxUnixtime}
+            <div className="recharts-graph-container">
 
                 <ResponsiveContainer width="100%"
                                      height={ 300 }>
@@ -37,20 +40,36 @@ class RechartsGraph extends React.Component {
                                type="number"
                                domain={ [this.state.minUnixtime, this.state.maxUnixtime] }
                                hide={ false }
-                               tickFormatter={this.tickFormatter} />
+                               tickFormatter={this.tickTimeFormatter}
+                               tick={ tickStyle }
+                               axisLine={ axisStyle }
+                               tickLine={ axisStyle }
+                               tickSize={ 5 }
+                        />
 
-                        <YAxis domain={ [this.state.minValue, this.state.maxValue] } />
+                        <YAxis domain={ [this.state.minValue, this.state.maxValue] }
+                               tick={ tickStyle }
+                               tickFormatter={ this.tickValueFormatter }
+                               axisLine={ axisStyle }
+                               tickLine={ axisStyle }
+                               tickSize={ 5 }
+                        />
 
-                        <Tooltip content={ <GraphTooltip unitName={ unitName } /> } />
+                        <Tooltip content={ <GraphTooltip unitName={ unitName } /> }
+                        />
 
                         <Line type="monotone"
                               dataKey="value"
-                              stroke="#0275d8"
-                              activeDot={{r: 7}} />
+                              stroke={ lineColor }
+                              strokeWidth={ lineWidth }
+                              dot={{ stroke: lineColor, strokeWidth: lineWidth, fill: '#fff', r: 3 }}
+                              activeDot={{r: 5}}
+                        />
 
                     </LineChart>
 
                 </ResponsiveContainer>
+
             </div>
         );
     }
@@ -126,8 +145,25 @@ class RechartsGraph extends React.Component {
     }
 
     // Форматирование меток на шкале времени
-    tickFormatter(unixtime) {
+    tickTimeFormatter(unixtime) {
         return moment(unixtime, 'X').format('DD.MM.YYYY');
+    }
+
+    // Форматирование меток на шкале значений
+    tickValueFormatter(value) {
+        let float = parseFloat(value);
+
+        if ( float < 10 && float % 1 !== 0 ) {
+
+            float = float.toFixed(2);
+
+        } else {
+
+            float = Math.round(float);
+
+        }
+
+        return float;
     }
 
 }

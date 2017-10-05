@@ -1,51 +1,49 @@
 import React from 'react';
 
-class AddPointForm extends React.Component {
+class AddPointButton extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
+        this.initialState = {
             value  : '',
             remark : ''
         };
+
+        this.state = this.initialState;
     }
 
     render() {
-        const { fetching } = this.props;
 
         return (
-            <div>
-                <form className="form-inline">
+            <div className="add-point-form">
+
+                <h2>Добавление новой точки</h2>
+
+                <form>
 
                     <label htmlFor="addPointFormVal">
                         Значение
                     </label>
 
                     <input type="number"
-                           className="form-control"
                            id="addPointFormVal"
                            placeholder="Новое значение"
                            value={ this.state.value }
-                           onChange={ this.onChangeValue.bind(this) } />
+                           required
+                           onChange={ this.onChangeValue.bind(this) }
+                    />
+
+                    <label htmlFor="addPointFormRemark">
+                        Комментарий
+                    </label>
 
                     <input type="text"
                            className="form-control"
                            id="addPointFormRemark"
-                           placeholder="Комментарий"
+                           placeholder="Введите комментарий"
                            value={ this.state.remark}
-                           onChange={ this.onChangeRemark.bind(this) } />
-
-                    <button className="primary"
-                            type="button"
-                            onClick={ this.onSubmit.bind(this) }
-                            disabled={ fetching } >
-                        {
-                            fetching
-                                ? <span>Подождите...</span>
-                                : <span>Добавить точку</span>
-
-                        }
-                    </button>
+                           onChange={ this.onChangeRemark.bind(this) }
+                    />
 
                 </form>
 
@@ -63,18 +61,23 @@ class AddPointForm extends React.Component {
 
     // Изменение значения
     onChangeValue(e) {
-        this.setState({value: e.target.value});
+        this.setState({value: e.target.value}, this.translateState);
     }
 
     // Изменение комментария
     onChangeRemark(e) {
-        this.setState({remark: e.target.value});
+        this.setState({remark: e.target.value}, this.translateState);
     }
 
-    // Кнопка добавления точки
-    onSubmit() {
-        this.props.onAddPoint(this.state.value, this.state.remark, this.props.graphId);
+    // Передать состояние выше
+    translateState() {
+        this.props.onChangeState(this.state);
+    }
+
+    // Очистка формы
+    clearForm() {
+        this.setState(this.initialState, this.translateState);
     }
 }
 
-export default AddPointForm;
+export default AddPointButton;

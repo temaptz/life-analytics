@@ -7,12 +7,9 @@ class SignOutButton extends React.Component {
         const { onSignOutClick } = this.props;
 
         return (
-            <div>
-                <button className="btn btn-default"
-                        onClick={ onSignOutClick } >
-                    Выход
-                </button>
-            </div>
+            <i className="button sign-out-button fa fa-sign-out"
+               aria-hidden="true"
+               onClick={ onSignOutClick }></i>
         );
     }
 }

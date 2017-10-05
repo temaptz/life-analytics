@@ -4,17 +4,19 @@ class DeleteGraphButton extends React.Component {
 
     render() {
 
-        const { onClick } = this.props;
+        const { onButtonClick } = this.props;
 
         return (
             <div>
-                <button className="btn btn-danger pull-right"
-                        onClick={ onClick }>
+                <button onClick={ onButtonClick }>
+                    <i className="fa fa-trash" aria-hidden="true"></i>
                     Удалить этот график
                 </button>
+
             </div>
         );
     }
+
 }
 
 export default DeleteGraphButton;

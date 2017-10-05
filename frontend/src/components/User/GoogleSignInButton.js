@@ -14,13 +14,13 @@ class GoogleSignInButton extends React.Component {
             width: '300px',
             paddingTop: '10px',
             paddingBottom: '10px',
-            borderRadius: '2px',
+            borderRadius: '3px',
             border: '1px solid transparent',
             fontSize: '16px'
         };
 
         return (
-            <div>
+            <div className="login-button">
                 <GoogleLogin
                     clientId={ googleClientId }
                     onSuccess={ this.onSuccess.bind(this) }

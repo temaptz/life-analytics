@@ -1,0 +1,8 @@
+@import '../../style/variables';
+
+.recharts-graph-container {
+  margin: $default-ident 0;
+  padding: $default-ident;
+  background-color: rgba(255, 255, 255, .4);
+  border-radius: $border-radius;
+}

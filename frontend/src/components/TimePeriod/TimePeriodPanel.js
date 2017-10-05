@@ -8,29 +8,31 @@ class TimePeriodPanel extends Component {
         const { currentPeriodName, onSetPeriod } = this.props;
 
         return (
-            <div>
+            <div className="input-group">
 
                 <TimePeriodButton currentPeriodName={ currentPeriodName }
                                   periodName={ timePeriods.PERIOD_ALL }
                                   onSetPeriod={ onSetPeriod }
-                                  text="Вся история" />
+                                  text="Вся история"
+                />
 
                 <TimePeriodButton currentPeriodName={ currentPeriodName }
                                   periodName={ timePeriods.PERIOD_YEAR }
                                   onSetPeriod={ onSetPeriod }
-                                  text="Год" />
+                                  text="Год"
+                />
 
                 <TimePeriodButton currentPeriodName={ currentPeriodName }
                                   periodName={ timePeriods.PERIOD_MONTH }
                                   onSetPeriod={ onSetPeriod }
-                                  text="Месяц" />
+                                  text="Месяц"
+                />
 
                 <TimePeriodButton currentPeriodName={ currentPeriodName }
                                   periodName={ timePeriods.PERIOD_WEEK }
                                   onSetPeriod={ onSetPeriod }
-                                  text="Неделя" />
-
-                { currentPeriodName }
+                                  text="Неделя"
+                />
 
             </div>
         );
