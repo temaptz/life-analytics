@@ -19,7 +19,7 @@ module.exports = (app, db) => {
                         userId     : userId
                     };
 
-                    if ( !graph.name || !graph.unitId ) {
+                    if ( !graph.name || graph.unitId === undefined ) {
                         response.status(500).send('Empty parameter');
                     }
 
