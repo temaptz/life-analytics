@@ -17,7 +17,7 @@ function* saveUserData(action) {
 
     } catch (e) {
 
-        yield location.reload();
+        yield window.location.reload();
 
     }
 }
@@ -110,7 +110,7 @@ function* clearState(action) {
 
     } catch (e) {
 
-        yield location.reload();
+        yield window.location.reload();
 
     }
 }

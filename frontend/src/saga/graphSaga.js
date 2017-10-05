@@ -74,7 +74,7 @@ function* setGraphPeriod(action) {
 
     } catch (e) {
 
-        location.reload();
+        yield window.location.reload();
 
     }
 }
