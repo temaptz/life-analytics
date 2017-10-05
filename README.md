@@ -16,10 +16,7 @@
 - MongoDB
 
 ## Запуск локально
-1) Запустить mongodb 
-<br>
-``$ mongod``
-2) backend/config/index.js - проверить строку подключения к БД и порт.
-3) ``$ cd backend && npm install && npm run dev``
-4) ``$ cd ../frontend && npm install && npm start``
-5) Открыть в браузере **http://localhost:3000**
+1. `$ mongod`
+2. `$ cd backend && npm install && npm run dev`
+3. `$ cd ../frontend && npm install && npm start`
+4. Открыть в браузере **http://localhost:3000**
