@@ -96,6 +96,44 @@ const checkPointAccess = (userId, pointId, db) => {
     return Promise.reject(false);
 };
 
+// Получить график по заголовкам
+const getGraphByHeader = (request, db) => {
+
+    const authHeader = request.get('Authorization');
+
+    if ( authHeader ) {
+
+        if ( authHeader.indexOf('GraphHash') !== -1 ) {
+
+            const hash = authHeader.replace('GraphHash', '').trim();
+
+            return db
+                .collection('graphs')
+                .findOne({
+                    hash    : hash,
+                    deleted : false
+                })
+                .then((graph) => {
+
+                    if ( graph && graph._id ) {
+                        return graph;
+                    }
+
+                    return Promise.reject(graph);
+
+                }, (err) => {
+
+                    return Promise.reject(err);
+
+                });
+
+        }
+
+    }
+
+    return Promise.reject(new Error('unknown error'));
+};
+
 // Показать ошибку доступа
 const accessDenied = (response) => {
     response.status(403).send('Access Denied');
@@ -104,4 +142,5 @@ const accessDenied = (response) => {
 module.exports.getCurrentUserByHeader = getCurrentUserByHeader;
 module.exports.checkGraphAccess       = checkGraphAccess;
 module.exports.checkPointAccess       = checkPointAccess;
+module.exports.getGraphByHeader       = getGraphByHeader;
 module.exports.accessDenied           = accessDenied;

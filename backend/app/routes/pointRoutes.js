@@ -23,6 +23,7 @@ module.exports = (app, db) => {
 
                             if ( !newPoint.value || !newPoint.graphId ) {
                                 response.status(500).send('Empty value');
+                                return;
                             }
 
                             db
@@ -183,6 +184,41 @@ module.exports = (app, db) => {
                         }, () => {
 
                             authorization.accessDenied(response);
+
+                        });
+
+                }, () => {
+
+                    authorization.accessDenied(response);
+
+                });
+        })
+
+        // Добавление точки через внешний источник
+        .post('/hash/points', (request, response) => {
+            authorization.getGraphByHeader(request, db)
+                .then((graph) => {
+
+                    const graphId = graph._id,
+                          value   = request.body.value;
+
+                    const newPoint = point.create(graphId, value);
+
+                    if ( !newPoint.value || !newPoint.graphId ) {
+                        response.status(500).send('Empty value');
+                        return;
+                    }
+
+                    db
+                        .collection('points')
+                        .insertOne(newPoint)
+                        .then((res) => {
+
+                            response.send(res);
+
+                        }, (err) => {
+
+                            response.send(err);
 
                         });
 
