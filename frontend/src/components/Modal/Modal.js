@@ -24,13 +24,18 @@ class Modal extends React.Component {
                             { textOk }
                         </button>
 
-                        <button className="secondary"
-                                onClick={ onCancel }>
-                            <i className="fa fa-times"
-                               aria-hidden="true">
-                            </i>
-                            { textCancel }
-                        </button>
+                        {
+                            ( onCancel ) ?
+                                <button className="secondary"
+                                        onClick={ onCancel }>
+                                    <i className="fa fa-times"
+                                       aria-hidden="true">
+                                    </i>
+                                    { textCancel }
+                                </button>
+                                :
+                                ''
+                        }
 
                     </div>
 

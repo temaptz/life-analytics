@@ -11,6 +11,7 @@ class GraphActions extends React.Component {
         this.state = {
             modalDeleteConfirmIsOpen : false,
             modalAddGraphOpen        : false,
+            modalHashIsOpen          : false,
             newGraphName             : '',
             newGraphUnitId           : '',
             newGraphDisableSave      : true
@@ -26,6 +27,7 @@ class GraphActions extends React.Component {
 
                 <GraphActionsDropdown onAddGraphClick={ this.showAddGraphModal.bind(this) }
                                       onDeleteGraphClick={ this.showDeleteConfirm.bind(this) }
+                                      onGetGraphHashClick={ this.showGraphHashModal.bind(this) }
                 />
 
 
@@ -51,6 +53,13 @@ class GraphActions extends React.Component {
                                          onChangeState={ this.updateNewGraphState.bind(this) }
                            />
                        }
+                />
+
+                <Modal isOpen={ this.state.modalHashIsOpen }
+                       onOk={ this.closeHashModal.bind(this) }
+                       onCancel={ false }
+                       textOk="Ok"
+                       content="Хэш"
                 />
 
             </div>
@@ -120,6 +129,17 @@ class GraphActions extends React.Component {
     deleteConfirm() {
         this.props.onDeleteGraph();
         this.cancelDeleteConfirm();
+    }
+
+    // Показать хэш графика
+    showGraphHashModal() {
+        this.setState({ modalHashIsOpen : true });
+
+    }
+
+    // Закрытие модального окна с хэшем графика
+    closeHashModal() {
+        this.setState({ modalHashIsOpen : false });
     }
 
 }

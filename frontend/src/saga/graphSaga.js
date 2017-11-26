@@ -5,9 +5,10 @@ import * as graphApi from '../api/graphApi';
 import * as pointsApi from '../api/pointsApi';
 import * as unitApi from '../api/unitApi';
 import { getTimeLimitsByPeriodName } from '../helpers/timePeriod';
+import { set } from '../helpers/browserStorage';
 
 // Выбор текущего графика после обновлении списка графиков
-function* selectDefaultGraph(action) {
+function* selectDefaultGraph() {
     try {
 
         const state        = yield select(),
@@ -64,12 +65,16 @@ function* selectDefaultGraph(action) {
 }
 
 // Выбор временного периода после выбора графика
-function* setGraphPeriod(action) {
+function* setGraphPeriod() {
     try {
+
+        const state = yield select();
+
+        const currentPeriodName = state.Graph.periodName;
 
         yield put({
             type: actionTypes.SET_GRAPH_PERIOD,
-            payload: { name : timePeriods.PERIOD_DEFAULT }
+            payload: { name : currentPeriodName }
         });
 
     } catch (e) {
@@ -80,7 +85,7 @@ function* setGraphPeriod(action) {
 }
 
 // Обновление точек графика после изменения временного периода
-export function* getGraphPoints(action) {
+export function* getGraphPoints() {
     try {
 
         const state = yield select();
@@ -111,8 +116,23 @@ export function* getGraphPoints(action) {
     }
 }
 
+// Сохранение периода графика после изменения временного периода
+export function* saveGraphCurrentPeriod() {
+    try {
+
+        const state = yield select();
+
+        yield set(timePeriods.CURRENT_PERIOD, state.Graph.periodName);
+
+    } catch (e) {
+
+        console.log(e);
+
+    }
+}
+
 // Получение единицы измерени графика после выбора графика
-function* getGraphUnitName(action) {
+function* getGraphUnitName() {
     try {
 
         const state = yield select();
@@ -140,7 +160,7 @@ function* getGraphUnitName(action) {
 }
 
 // Обновление списка графиков после добавления или удаления графика
-function* updateGraphList(action) {
+function* updateGraphList() {
     try {
 
         yield put({
@@ -175,6 +195,9 @@ function* graphSaga() {
 
     // Получение точек графика после изменения временного периода
     yield takeLatest(actionTypes.SET_GRAPH_PERIOD, getGraphPoints);
+
+    // Сохранение выбранного периода графика после изменения временного периода
+    yield takeLatest(actionTypes.SET_GRAPH_PERIOD, saveGraphCurrentPeriod);
 
     // Получение единицы измерени графика после выбора графика
     yield takeLatest(actionTypes.SELECT_GRAPH_SUCCESS, getGraphUnitName);

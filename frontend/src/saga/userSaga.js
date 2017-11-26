@@ -6,7 +6,7 @@ import * as graphApi from '../api/graphApi';
 import * as unitApi from '../api/unitApi';
 
 // Сохранение пользователских данных в браузере после авторизации
-function* saveUserData(action) {
+function* saveUserData() {
     try {
 
         const state = yield select();
@@ -23,7 +23,7 @@ function* saveUserData(action) {
 }
 
 // Загрузка доступных графиков после авторизации
-function* updateGraphList(action) {
+function* updateGraphList() {
     try {
 
         yield put({
@@ -49,7 +49,7 @@ function* updateGraphList(action) {
 }
 
 // Загрузка единиц измерения после авторизации
-function* updateUnitList(action) {
+function* updateUnitList() {
     try {
 
         yield put({
@@ -75,7 +75,7 @@ function* updateUnitList(action) {
 }
 
 // Удаление пользовательских данных из браузера при выходе из системы
-function* removeUserData(action) {
+function* removeUserData() {
     try {
 
         yield browserStorage.remove(storage.USER_NAME);
@@ -90,7 +90,7 @@ function* removeUserData(action) {
 }
 
 // Сброс состояния при выходе из системы
-function* clearState(action) {
+function* clearState() {
     try {
 
         yield put({

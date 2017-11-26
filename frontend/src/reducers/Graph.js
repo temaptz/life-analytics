@@ -1,12 +1,13 @@
 import * as actionTypes from '../constants/ActionTypes';
 import * as timePeriods from '../constants/TimePeriods';
+import { get } from '../helpers/browserStorage';
 
 const initialState = {
     id                : '',
     name              : '',
     unitId            : '',
     graphList         : [],
-    periodName        : timePeriods.PERIOD_DEFAULT,
+    periodName        : get(timePeriods.CURRENT_PERIOD) || timePeriods.PERIOD_DEFAULT,
     fetching          : false
 };
 
@@ -64,6 +65,7 @@ export default function graphState(state = initialState, action) {
 
         // Сброс состояния графиков
         case actionTypes.CLEAR_GRAPHS_STATE:
+            initialState.periodName = get(timePeriods.CURRENT_PERIOD) || timePeriods.PERIOD_DEFAULT;
             return initialState;
 
 
