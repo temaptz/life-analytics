@@ -1,6 +1,6 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import * as actionTypes from '../constants/ActionTypes';
-import * as timePeriods from '../constants/TimePeriods';
+import * as storage from '../constants/Storage';
 import * as graphApi from '../api/graphApi';
 import * as pointsApi from '../api/pointsApi';
 import * as unitApi from '../api/unitApi';
@@ -38,21 +38,17 @@ function* selectDefaultGraph() {
 
         }
 
-        if ( selectedGraphId !== lastGraphId ) {
+        yield put({
+            type: actionTypes.SELECT_GRAPH_REQUEST,
+            payload: null
+        });
 
-            yield put({
-                type: actionTypes.SELECT_GRAPH_REQUEST,
-                payload: null
-            });
+        const graph = yield call(graphApi.getGraph, selectedGraphId);
 
-            const graph = yield call(graphApi.getGraph, selectedGraphId);
-
-            yield put({
-                type: actionTypes.SELECT_GRAPH_SUCCESS,
-                payload: graph
-            });
-
-        }
+        yield put({
+            type: actionTypes.SELECT_GRAPH_SUCCESS,
+            payload: graph
+        });
 
     } catch (e) {
 
@@ -80,6 +76,21 @@ function* setGraphPeriod() {
     } catch (e) {
 
         yield window.location.reload();
+
+    }
+}
+
+// Сохранение графика после обновления списка графиков
+export function* saveCurrentGraph() {
+    try {
+
+        const state = yield select();
+
+        yield set(storage.CURRENT_GRAPH_ID, state.Graph.id);
+
+    } catch (e) {
+
+        console.log(e);
 
     }
 }
@@ -122,7 +133,7 @@ export function* saveGraphCurrentPeriod() {
 
         const state = yield select();
 
-        yield set(timePeriods.CURRENT_PERIOD, state.Graph.periodName);
+        yield set(storage.CURRENT_TIME_PERIOD, state.Graph.periodName);
 
     } catch (e) {
 
@@ -192,6 +203,9 @@ function* graphSaga() {
 
     // Выбор временного периода после выбора графика
     yield takeLatest(actionTypes.SELECT_GRAPH_SUCCESS, setGraphPeriod);
+
+    // Сохранение выбранного графика после выбора графика
+    yield takeLatest(actionTypes.SELECT_GRAPH_SUCCESS, saveCurrentGraph);
 
     // Получение точек графика после изменения временного периода
     yield takeLatest(actionTypes.SET_GRAPH_PERIOD, getGraphPoints);

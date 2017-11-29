@@ -5,5 +5,3 @@ export const PERIOD_YEAR  = 'PERIOD_YEAR';
 export const PERIOD_ALL   = 'PERIOD_ALL';
 
 export const PERIOD_DEFAULT  = PERIOD_MONTH;
-
-export const CURRENT_PERIOD = 'CURRENT_PERIOD';

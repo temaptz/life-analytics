@@ -1,7 +1,7 @@
 import React from 'react';
 import AddGraphButton from './AddGraphButton';
 import DeleteGraphButton from './DeleteGraphButton';
-import GetGraphHashButton from './GetGraphHashButton';
+// import GetGraphHashButton from './GetGraphHashButton';
 import './GraphActionsDropdown.css';
 
 class GraphActionsDropdown extends React.Component {
@@ -18,7 +18,7 @@ class GraphActionsDropdown extends React.Component {
 
     render() {
 
-        const { onAddGraphClick, onDeleteGraphClick, onGetGraphHashClick } = this.props;
+        const { onAddGraphClick, onDeleteGraphClick /*, onGetGraphHashClick */ } = this.props;
 
         return (
             <div className="dropdown-container">
